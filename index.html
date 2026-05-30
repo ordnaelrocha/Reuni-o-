@@ -148,6 +148,12 @@
         .btn-add { background-color: #d1fae5; color: #065f46; margin-right: 5px; }
         .btn-remove { background-color: #fee2e2; color: #991b1b; }
 
+        .banner-controls {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
         .section-lock-btn {
             background: rgba(255, 255, 255, 0.25);
             color: white;
@@ -160,10 +166,30 @@
             display: flex;
             align-items: center;
             gap: 4px;
+            width: auto;
         }
         .section-lock-btn.locked {
             background: rgba(0, 0, 0, 0.6);
             color: #f87171;
+        }
+
+        .section-bold-btn {
+            background: rgba(255, 255, 255, 0.25);
+            color: white;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            width: auto;
+        }
+        .section-bold-btn.active-bold {
+            background: rgba(0, 0, 0, 0.6) !important;
+            color: #fef08a !important;
         }
 
         .tabs-container {
@@ -488,7 +514,7 @@
 
         @media print {
             body { background: white; padding: 0; }
-            #developer-tag, #control-panel, .tabs-container, .section-lock-btn, .btn-action-confirm, .btn-delete-note, .row-controls, .section-inline-add, .history-controls, .history-collapse-btn { display: none !important; }
+            #developer-tag, #control-panel, .tabs-container, .section-lock-btn, .section-bold-btn, .btn-action-confirm, .btn-delete-note, .row-controls, .section-inline-add, .history-controls, .history-collapse-btn { display: none !important; }
             .tab-content { display: block !important; }
             .document-container { box-shadow: none; padding: 0; width: 100%; max-width: 100%; border-radius: 0; }
         }
@@ -506,7 +532,6 @@
             <button class="btn-theme-toggle" onclick="rotateTheme()">🎨 Mudar Visual</button>
             <button class="btn-theme-toggle" style="background-color: #e0f2fe; color: #0369a1; border-color: #bae6fd;" onclick="rotatePaperColor()">📄 Cor do Papel</button>
             <button class="btn-theme-toggle" style="background-color: #f3e8ff; color: #6b21a8; border-color: #e9d5ff;" onclick="rotateFont()">🔤 Mudar Fonte</button>
-            <button class="btn-theme-toggle" style="background-color: #fef08a; color: #854d0e; border-color: #fde047;" onclick="toggleBoldSelection()">✍️ Negrito</button>
         </div>
     </div>
 
@@ -518,7 +543,8 @@
         <button class="tab-button" onclick="switchTab(event, 'vida')">🍷 Vida Cristã</button>
         <button class="tab-button" onclick="switchTab(event, 'fimdesemana')">🗓️ Fim de Semana</button>
         <button class="tab-button" onclick="switchTab(event, 'confirmacoes')">✅ Confirmações</button>
-        <button class="tab-button" onclick="switchTab(event, 'notas')">📝 Notas</button>
+        <button class="tab-button" onclick="switchTab(event, 'eventos')">📅 Eventos</button>
+        <button class="tab-button" onclick="switchTab(event, 'notes')">📝 Notas</button>
         <button class="tab-button" onclick="switchTab(event, 'historico')">📜 Histórico</button>
     </div>
 
@@ -536,7 +562,10 @@
         <div id="section-inicio" class="tab-content active-content">
             <div class="section-banner bg-tesouros" style="background-color: #1e293b;">
                 <span>DADOS GERAIS</span>
-                <button class="section-lock-btn locked" id="lock-btn-inicio" onclick="toggleSectionLock('inicio', this)">🔒 Trancado</button>
+                <div class="banner-controls">
+                    <button class="section-bold-btn" onclick="toggleBoldSelection(this)">✍️ Negrito</button>
+                    <button class="section-lock-btn locked" id="lock-btn-inicio" onclick="toggleSectionLock('inicio', this)">🔒 Trancado</button>
+                </div>
             </div>
             <div id="rows-container-inicio">
                 </div>
@@ -548,7 +577,10 @@
         <div id="section-tesouros" class="tab-content active-content">
             <div class="section-banner bg-tesouros">
                 <span>TESOUROS DA PALAVRA DE DEUS</span>
-                <button class="section-lock-btn locked" id="lock-btn-tesouros" onclick="toggleSectionLock('tesouros', this)">🔒 Trancado</button>
+                <div class="banner-controls">
+                    <button class="section-bold-btn" onclick="toggleBoldSelection(this)">✍️ Negrito</button>
+                    <button class="section-lock-btn locked" id="lock-btn-tesouros" onclick="toggleSectionLock('tesouros', this)">🔒 Trancado</button>
+                </div>
             </div>
             <div id="rows-container-tesouros">
                 </div>
@@ -560,7 +592,10 @@
         <div id="section-ministerio" class="tab-content active-content">
             <div class="section-banner bg-ministerio">
                 <span>FAÇA SEU MELHOR NO MINISTÉRIO</span>
-                <button class="section-lock-btn locked" id="lock-btn-ministerio" onclick="toggleSectionLock('ministerio', this)">🔒 Trancado</button>
+                <div class="banner-controls">
+                    <button class="section-bold-btn" onclick="toggleBoldSelection(this)">✍️ Negrito</button>
+                    <button class="section-lock-btn locked" id="lock-btn-ministerio" onclick="toggleSectionLock('ministerio', this)">🔒 Trancado</button>
+                </div>
             </div>
             <div id="rows-container-ministerio">
                 </div>
@@ -572,7 +607,10 @@
         <div id="section-vida" class="tab-content active-content">
             <div class="section-banner bg-vida">
                 <span>NOSSA VIDA CRISTÃ</span>
-                <button class="section-lock-btn locked" id="lock-btn-vida" onclick="toggleSectionLock('vida', this)">🔒 Trancado</button>
+                <div class="banner-controls">
+                    <button class="section-bold-btn" onclick="toggleBoldSelection(this)">✍️ Negrito</button>
+                    <button class="section-lock-btn locked" id="lock-btn-vida" onclick="toggleSectionLock('vida', this)">🔒 Trancado</button>
+                </div>
             </div>
             <div id="rows-container-vida">
                 </div>
@@ -583,7 +621,10 @@
         <div id="section-fimdesemana" class="tab-content active-content">
             <div class="section-banner bg-tesouros" style="background-color: #2b4c7e;">
                 <span>REUNIÃO DE FIM DE SEMANA</span>
-                <button class="section-lock-btn locked" id="lock-btn-fimdesemana" onclick="toggleSectionLock('fimdesemana', this)">🔒 Trancado</button>
+                <div class="banner-controls">
+                    <button class="section-bold-btn" onclick="toggleBoldSelection(this)">✍️ Negrito</button>
+                    <button class="section-lock-btn locked" id="lock-btn-fimdesemana" onclick="toggleSectionLock('fimdesemana', this)">🔒 Trancado</button>
+                </div>
             </div>
             <div id="rows-container-fimdesemana">
                 </div>
@@ -595,7 +636,10 @@
         <div id="section-confirmacoes" class="tab-content">
             <div class="section-banner" style="background-color: #059669;">
                 <span>CONTROLE DE CONFIRMAÇÕES</span>
-                <button class="section-lock-btn locked" id="lock-btn-confirmacoes" onclick="toggleSectionLock('confirmacoes', this)">🔒 Trancado</button>
+                <div class="banner-controls">
+                    <button class="section-bold-btn" onclick="toggleBoldSelection(this)">✍️ Negrito</button>
+                    <button class="section-lock-btn locked" id="lock-btn-confirmacoes" onclick="toggleSectionLock('confirmacoes', this)">🔒 Trancado</button>
+                </div>
             </div>
             <div id="confirm-rows-container">
                 <div class="table-row" style="background-color: #f1f5f9; font-weight: bold;">
@@ -609,10 +653,32 @@
             </div>
         </div>
 
+        <div id="section-eventos" class="tab-content">
+            <div class="section-banner" style="background-color: #4b5563;">
+                <span>EVENTOS E PROGRAMAÇÕES ESPECIAIS</span>
+                <div class="banner-controls">
+                    <button class="section-bold-btn" onclick="toggleBoldSelection(this)">✍️ Negrito</button>
+                    <button class="section-lock-btn locked" id="lock-btn-eventos" onclick="toggleSectionLock('eventos', this)">🔒 Trancado</button>
+                </div>
+            </div>
+            <div id="eventos-rows-container" style="margin-top: 10px;">
+                <div class="table-row" style="background-color: #f1f5f9; font-weight: bold;">
+                    <div class="cell col-time" style="width: 25%; max-width: 90px; background-color: #e2e8f0;">Data / Período</div>
+                    <div class="cell col-content" style="width: 75%; background-color: #e2e8f0;">Descrição do Evento Especial</div>
+                </div>
+                </div>
+            <div style="text-align: center; margin-top: 10px;">
+                <button class="btn-action-confirm btn-add" style="width: 90%; background-color: #f3f4f6; color: #374151; border: 1px dashed #9ca3af;" onclick="addEventRow()">➕ Adicionar Novo Evento</button>
+            </div>
+        </div>
+
         <div id="section-notas" class="tab-content">
             <div class="section-banner" style="background-color: #475569;">
                 <span>BLOCO DE NOTAS E LEMBRETES</span>
-                <button class="section-lock-btn locked" id="lock-btn-notas" onclick="toggleSectionLock('notas', this)">🔒 Trancado</button>
+                <div class="banner-controls">
+                    <button class="section-bold-btn" onclick="toggleBoldSelection(this)">✍️ Negrito</button>
+                    <button class="section-lock-btn locked" id="lock-btn-notas" onclick="toggleSectionLock('notas', this)">🔒 Trancado</button>
+                </div>
             </div>
             <div id="notes-container" style="margin-top: 10px;">
                 </div>
@@ -662,7 +728,7 @@
         ];
 
         let historyData = [];
-        let lockStates = { inicio: true, tesouros: true, ministerio: true, vida: true, fimdesemana: true, confirmacoes: true, notas: true };
+        let lockStates = { inicio: true, tesouros: true, ministerio: true, vida: true, fimdesemana: true, confirmacoes: true, eventos: true, notas: true };
         
         let isLoading = true;
 
@@ -706,11 +772,39 @@
             document.documentElement.style.setProperty('--app-font', fontValue);
         }
 
-        // --- FUNÇÃO PARA COLOCAR TEXTO EM NEGRITO ---
-        function toggleBoldSelection() {
+        // --- FUNÇÃO PARA ATIVAR/DESATIVAR MODO NEGRITO EM TEMPO REAL ---
+        function toggleBoldSelection(btn) {
+            // Executa o comando nativo de negrito caso haja texto selecionado
             document.execCommand('bold', false, null);
+            
+            // Alterna o estado visual e o comportamento de digitação futura
+            if(btn) {
+                const isActive = btn.classList.toggle('active-bold');
+                
+                // Sincroniza todos os botões de negrito das abas com o mesmo estado
+                document.querySelectorAll('.section-bold-btn').forEach(b => {
+                    if(isActive) b.classList.add('active-bold');
+                    else b.classList.remove('active-bold');
+                });
+
+                // Ativa o estado no documento para o que for digitado em seguida
+                if(isActive) {
+                    document.execCommand('styleWithCSS', false, false);
+                }
+            }
             saveAllData();
         }
+
+        // Garante que o estado de negrito permaneça ativo se o botão estiver ligado
+        document.addEventListener('keydown', function(e) {
+            const activeBoldBtn = document.querySelector('.section-bold-btn.active-bold');
+            if (activeBoldBtn && e.target.hasAttribute('contenteditable')) {
+                // Se o comando de negrito não estiver ativo no cursor atual, força a ativação
+                if(!document.queryCommandState('bold')) {
+                    document.execCommand('bold', false, null);
+                }
+            }
+        });
 
         // --- FUNÇÃO PARA EXPANDIR / RECOLHER HISTÓRICO ---
         function toggleHistoryContent() {
@@ -777,6 +871,26 @@
                 <div class="cell col-content editable-field-confirmacoes local-dyn-save" style="width: 45%; font-weight: normal;" contenteditable="${!isLocked}">${name}</div>
                 <div class="cell col-assigned editable-field-confirmacoes local-dyn-save" style="width: 40%;" contenteditable="${!isLocked}">${part}</div>
                 <div class="cell col-check"><input type="checkbox" class="checkbox-confirm" ${checked ? 'checked' : ''} onchange="saveAllData()"></div>
+                <div class="row-controls" style="display: ${isLocked ? 'none' : 'flex'}">
+                    <button class="btn-row-action" onclick="moveRow(this, 'up')">▲</button>
+                    <button class="btn-row-action" onclick="moveRow(this, 'down')">▼</button>
+                    <button class="btn-row-action btn-row-del" onclick="deleteRow(this)">❌</button>
+                </div>
+            `;
+            container.appendChild(newRow);
+            if (!isLoading) saveAllData();
+        }
+
+        // --- ABA EVENTOS ---
+        function addEventRow(date = "00/00", eventDesc = "Descrição do evento...") {
+            const container = document.getElementById('eventos-rows-container');
+            const isLocked = lockStates['eventos'] !== undefined ? lockStates['eventos'] : true;
+            
+            const newRow = document.createElement('div');
+            newRow.className = 'table-row dynamic-event-row';
+            newRow.innerHTML = `
+                <div class="cell col-time editable-field-eventos local-dyn-save" style="width: 25%; max-width: 90px; justify-content: center; text-align: center; font-weight: 600;" contenteditable="${!isLocked}">${date}</div>
+                <div class="cell col-content editable-field-eventos local-dyn-save" style="width: 75%; font-weight: normal;" contenteditable="${!isLocked}">${eventDesc}</div>
                 <div class="row-controls" style="display: ${isLocked ? 'none' : 'flex'}">
                     <button class="btn-row-action" onclick="moveRow(this, 'up')">▲</button>
                     <button class="btn-row-action" onclick="moveRow(this, 'down')">▼</button>
@@ -947,6 +1061,18 @@
                 });
                 localStorage.setItem('leandro-confirm-data', JSON.stringify(confirmData));
 
+                const eventosData = [];
+                document.querySelectorAll('.dynamic-event-row').forEach(row => {
+                    const cells = row.querySelectorAll('.cell');
+                    if(cells.length >= 2) {
+                        eventosData.push({
+                            date: cells[0].innerHTML,
+                            eventDesc: cells[1].innerHTML
+                        });
+                    }
+                });
+                localStorage.setItem('leandro-eventos-data', JSON.stringify(eventosData));
+
                 const notesData = [];
                 document.querySelectorAll('.dynamic-note-row').forEach(note => {
                     const editable = note.querySelector('.note-editable');
@@ -1046,6 +1172,16 @@
             } catch(e) { console.error(e); }
 
             try {
+                const savedEventos = localStorage.getItem('leandro-eventos-data');
+                if (savedEventos) {
+                    JSON.parse(savedEventos).forEach(item => addEventRow(item.date, item.eventDesc));
+                } else {
+                    addEventRow("14/06", "Visita do Superintendente de Circuito");
+                    addEventRow("25/07", "Assembleia de Circuito");
+                }
+            } catch(e) { console.error(e); }
+
+            try {
                 const savedNotes = localStorage.getItem('leandro-notes-data');
                 if (savedNotes) {
                     JSON.parse(savedNotes).forEach(text => addNewNote(text));
@@ -1103,7 +1239,8 @@
             
             let targetContainer;
             if(sectionKey === 'confirmacoes') targetContainer = document.getElementById('confirm-rows-container');
-            else if(sectionKey === 'notes') targetContainer = document.getElementById('notes-container');
+            else if(sectionKey === 'eventos') targetContainer = document.getElementById('eventos-rows-container');
+            else if(sectionKey === 'notas') targetContainer = document.getElementById('notes-container');
             else targetContainer = document.getElementById(`rows-container-${sectionKey}`);
 
             if(sectionKey === 'inicio') {
@@ -1145,6 +1282,7 @@
             if (sectionId === 'all') {
                 contents.forEach(content => content.classList.add('active-content'));
                 document.getElementById('section-confirmacoes').classList.remove('active-content');
+                document.getElementById('section-eventos').classList.remove('active-content');
                 document.getElementById('section-notas').classList.remove('active-content');
                 document.getElementById('section-historico').classList.remove('active-content');
             } else {
