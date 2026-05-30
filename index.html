@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Esboço do Presidente - Leandro Rocha</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;600;700&family=Open+Sans:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
@@ -18,6 +18,7 @@
             --cantico-bg: #fef9c3; /* Amarelo um pouco mais destacado para cânticos */  
             --accent-color: #1a73e8;
             --body-bg: #f8fafc;
+            --app-font: 'Plus Jakarta Sans', sans-serif;
         }
 
         [data-theme="clear-blue"] {
@@ -40,9 +41,20 @@
             --cantico-bg: #f0fdf4;
         }
 
+        /* Novas opções de cores de fundo para o papel onde escrevemos */
+        [data-paper="soft-blue"] {
+            --primary-bg: #f0f7ff;
+            --cantico-bg: #e0efff;
+        }
+
+        [data-paper="modern-gray"] {
+            --primary-bg: #f8fafc;
+            --cantico-bg: #f1f5f9;
+        }
+
         * {
             box-sizing: border-box;
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: var(--app-font);
             margin: 0;
             padding: 0;
         }
@@ -102,9 +114,9 @@
         }
 
         .btn-group {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
             gap: 6px;
-            justify-content: center;
             width: 100%;
         }
 
@@ -116,15 +128,14 @@
             font-weight: 600;
             transition: all 0.2s ease;
             font-size: 11px;
-            flex-grow: 1;
             text-align: center;
+            width: 100%;
         }
 
         .btn-theme-toggle {
             background: #e2e8f0;
             color: #1e293b;
             border: 1px solid #cbd5e1;
-            max-width: 200px;
         }
 
         .btn-action-confirm {
@@ -464,7 +475,7 @@
             text-align: center;
         }
         .history-collapse-content {
-            display: block; /* Padrão visível, controlado via JS */
+            display: block; 
             transition: all 0.3s ease;
         }
 
@@ -493,6 +504,9 @@
         <div class="panel-title">Opções do Aplicativo</div>
         <div class="btn-group">
             <button class="btn-theme-toggle" onclick="rotateTheme()">🎨 Mudar Visual</button>
+            <button class="btn-theme-toggle" style="background-color: #e0f2fe; color: #0369a1; border-color: #bae6fd;" onclick="rotatePaperColor()">📄 Cor do Papel</button>
+            <button class="btn-theme-toggle" style="background-color: #f3e8ff; color: #6b21a8; border-color: #e9d5ff;" onclick="rotateFont()">🔤 Mudar Fonte</button>
+            <button class="btn-theme-toggle" style="background-color: #fef08a; color: #854d0e; border-color: #fde047;" onclick="toggleBoldSelection()">✍️ Negrito</button>
         </div>
     </div>
 
@@ -635,6 +649,18 @@
     <script>
         let currentThemeIndex = 0;
         const themes = ['default', 'clear-blue', 'clear-green'];
+        
+        let currentPaperIndex = 0;
+        const papers = ['default', 'soft-blue', 'modern-gray'];
+
+        let currentFontIndex = 0;
+        const fonts = [
+            "'Plus Jakarta Sans', sans-serif",
+            "'Roboto', sans-serif",
+            "'Inter', sans-serif",
+            "'Open Sans', sans-serif"
+        ];
+
         let historyData = [];
         let lockStates = { inicio: true, tesouros: true, ministerio: true, vida: true, fimdesemana: true, confirmacoes: true, notas: true };
         
@@ -648,11 +674,42 @@
 
         function applyTheme(themeName) {
             const body = document.body;
-            if (themeName === 'default') {
-                body.removeAttribute('data-theme');
-            } else {
+            body.removeAttribute('data-theme');
+            if (themeName !== 'default') {
                 body.setAttribute('data-theme', themeName);
             }
+        }
+
+        // --- FUNÇÃO PARA ALTERNAR A COR DO PAPEL ---
+        function rotatePaperColor() {
+            currentPaperIndex = (currentPaperIndex + 1) % papers.length;
+            applyPaperColor(papers[currentPaperIndex]);
+            localStorage.setItem('leandro-app-paper', papers[currentPaperIndex]);
+        }
+
+        function applyPaperColor(paperName) {
+            const body = document.body;
+            body.removeAttribute('data-paper');
+            if (paperName !== 'default') {
+                body.setAttribute('data-paper', paperName);
+            }
+        }
+
+        // --- FUNÇÃO PARA ALTERNAR FONTES ---
+        function rotateFont() {
+            currentFontIndex = (currentFontIndex + 1) % fonts.length;
+            applyFont(fonts[currentFontIndex]);
+            localStorage.setItem('leandro-app-font-idx', currentFontIndex);
+        }
+
+        function applyFont(fontValue) {
+            document.documentElement.style.setProperty('--app-font', fontValue);
+        }
+
+        // --- FUNÇÃO PARA COLOCAR TEXTO EM NEGRITO ---
+        function toggleBoldSelection() {
+            document.execCommand('bold', false, null);
+            saveAllData();
         }
 
         // --- FUNÇÃO PARA EXPANDIR / RECOLHER HISTÓRICO ---
@@ -911,6 +968,18 @@
                 const savedTheme = localStorage.getItem('leandro-app-theme');
                 if (savedTheme) applyTheme(savedTheme);
 
+                const savedPaper = localStorage.getItem('leandro-app-paper');
+                if (savedPaper) {
+                    currentPaperIndex = papers.indexOf(savedPaper);
+                    applyPaperColor(savedPaper);
+                }
+
+                const savedFontIdx = localStorage.getItem('leandro-app-font-idx');
+                if (savedFontIdx !== null) {
+                    currentFontIndex = parseInt(savedFontIdx, 10);
+                    applyFont(fonts[currentFontIndex]);
+                }
+
                 const savedFixed = localStorage.getItem('leandro-fixed-fields');
                 if (savedFixed) {
                     const fixedFields = JSON.parse(savedFixed);
@@ -1034,7 +1103,7 @@
             
             let targetContainer;
             if(sectionKey === 'confirmacoes') targetContainer = document.getElementById('confirm-rows-container');
-            else if(sectionKey === 'notas') targetContainer = document.getElementById('notes-container');
+            else if(sectionKey === 'notes') targetContainer = document.getElementById('notes-container');
             else targetContainer = document.getElementById(`rows-container-${sectionKey}`);
 
             if(sectionKey === 'inicio') {
