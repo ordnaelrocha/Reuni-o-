@@ -8,14 +8,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
-            --primary-bg: #fffdeb; /* Fundo amarelado suave para o documento */
+            --primary-bg: #fffdeb; 
             --text-color: #1a1a1a;
             --text-secondary: #5f6368;
             --border-color: #000000;
             --header-bg-1: #386a7a; 
             --header-bg-2: #b58105; 
             --header-bg-3: #941c1c; 
-            --cantico-bg: #fef9c3; /* Amarelo um pouco mais destacado para cânticos */  
+            --cantico-bg: #fef9c3; 
             --accent-color: #1a73e8;
             --body-bg: #f8fafc;
             --app-font: 'Plus Jakarta Sans', sans-serif;
@@ -41,7 +41,6 @@
             --cantico-bg: #f0fdf4;
         }
 
-        /* Novas opções de cores de fundo para o papel onde escrevemos */
         [data-paper="soft-blue"] {
             --primary-bg: #f0f7ff;
             --cantico-bg: #e0efff;
@@ -138,15 +137,11 @@
             border: 1px solid #cbd5e1;
         }
 
-        .btn-action-confirm {
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 11px;
-            margin-top: 10px;
-            font-weight: bold;
+        .btn-backup {
+            background-color: #0f172a;
+            color: #ffffff;
+            border: 1px solid #1e293b;
         }
-        .btn-add { background-color: #d1fae5; color: #065f46; margin-right: 5px; }
-        .btn-remove { background-color: #fee2e2; color: #991b1b; }
 
         .banner-controls {
             display: flex;
@@ -206,9 +201,7 @@
             white-space: nowrap;
         }
 
-        .tabs-container::-webkit-scrollbar {
-            display: none;
-        }
+        .tabs-container::-webkit-scrollbar { display: none; }
 
         .tab-button {
             padding: 10px 12px;
@@ -307,7 +300,11 @@
             border-right: 1px solid #000000;
             flex-grow: 1; 
             display: block; 
-            font-weight: 700; 
+            font-weight: 400;
+        }
+        
+        .text-bold-active {
+            font-weight: 700 !important;
         }
 
         [contenteditable="true"]:focus {
@@ -330,20 +327,13 @@
             flex-shrink: 0;
             display: block;
         }
-
-        .col-check {
-            width: 15%;
-            justify-content: center;
-            text-align: center;
-        }
         
-        /* Controles de Gerenciamento das Linhas */
         .row-controls {
             position: absolute;
             right: -75px;
             top: 50%;
             transform: translateY(-50%);
-            display: none; 
+            display: flex; 
             gap: 2px;
             background: rgba(241, 245, 249, 0.9);
             padding: 4px;
@@ -364,7 +354,6 @@
         }
         .btn-row-action:hover { background: #f1f5f9; }
         .btn-row-del { color: #dc2626; border-color: #fca5a5; }
-        .btn-row-del:hover { background: #fee2e2; }
 
         .section-inline-add {
             text-align: right;
@@ -382,13 +371,6 @@
             font-weight: bold;
             display: inline-block;
             width: auto;
-        }
-        .btn-inline-add-spec:hover { background: #e2e8f0; }
-
-        .checkbox-confirm {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
         }
 
         .note-block {
@@ -413,7 +395,7 @@
             font-weight: bold;
             border: none;
             text-align: right;
-            display: none; 
+            display: block; 
             margin-top: 4px;
             cursor: pointer;
             width: auto;
@@ -436,860 +418,717 @@
         .bg-vida { background-color: var(--header-bg-3); }
         .bg-cantico { background-color: var(--cantico-bg) !important; }
 
-        .large-comment-block {
-            padding: 10px 8px;
-            min-height: 120px;
-            font-size: 12px;
-            outline: none;
-            line-height: 1.4;
-            width: 100%;
-            background-color: var(--primary-bg);
-        }
+        .tab-content { display: none; }
+        .tab-content.active-content { display: block; }
 
-        .bold { font-weight: 700; }
-
-        /* Estilos do Histórico */
-        .history-controls {
-            margin-bottom: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        .history-search {
-            width: 100%;
-            padding: 8px 12px;
-            border-radius: 8px;
-            border: 1px solid #cbd5e1;
-            font-size: 12px;
-        }
-        .history-list {
-            max-height: 300px;
-            overflow-y: auto;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            background: #fff;
-        }
-        .history-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 12px;
-            border-bottom: 1px solid #f1f5f9;
-            font-size: 12px;
-        }
-        .history-item:last-child { border-bottom: none; }
-        .history-name { font-weight: 700; color: #1e293b; }
-        .history-meta { font-size: 11px; color: #64748b; }
-        .btn-history-del {
-            background: none;
-            color: #ef4444;
-            cursor: pointer;
-            padding: 2px 6px;
-            font-size: 10px;
-            width: auto;
-        }
-
-        /* Estilos da Seção Recolhível do Histórico */
-        .history-collapse-btn {
-            background-color: #64748b;
+        .text-format-toolbar {
+            position: absolute;
+            background: #1e293b;
             color: white;
+            padding: 4px 8px;
             border-radius: 8px;
-            margin-bottom: 8px;
-            font-weight: bold;
-            width: 100%;
-            display: block;
-            text-align: center;
+            display: flex;
+            gap: 6px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            z-index: 1000;
+            pointer-events: auto;
         }
-        .history-collapse-content {
-            display: block; 
-            transition: all 0.3s ease;
+        .text-format-toolbar button {
+            background: transparent;
+            color: white;
+            border: none;
+            padding: 2px 8px;
+            font-size: 11px;
+            cursor: pointer;
+            width: auto;
+            border-radius: 4px;
         }
-
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active-content {
-            display: block;
+        .text-format-toolbar button:hover {
+            background: rgba(255,255,255,0.2);
         }
 
         @media print {
             body { background: white; padding: 0; }
-            #developer-tag, #control-panel, .tabs-container, .section-lock-btn, .section-bold-btn, .btn-action-confirm, .btn-delete-note, .row-controls, .section-inline-add, .history-controls, .history-collapse-btn { display: none !important; }
+            #developer-tag, #control-panel, .tabs-container, .section-lock-btn, .section-bold-btn, .btn-delete-note, .row-controls, .section-inline-add, .text-format-toolbar { display: none !important; }
             .tab-content { display: block !important; }
             .document-container { box-shadow: none; padding: 0; width: 100%; max-width: 100%; border-radius: 0; }
         }
     </style>
 </head>
 <body>
-
     <div id="developer-tag">
-        📱 Aplicativo feito por Leandro Rocha
-    </div>
+    <span>✨ Programado por Leandro Rocha ✨</span>
+</div>
 
-    <div id="control-panel">
-        <div class="panel-title">Opções do Aplicativo</div>
-        <div class="btn-group">
-            <button class="btn-theme-toggle" onclick="rotateTheme()">🎨 Mudar Visual</button>
-            <button class="btn-theme-toggle" style="background-color: #e0f2fe; color: #0369a1; border-color: #bae6fd;" onclick="rotatePaperColor()">📄 Cor do Papel</button>
-            <button class="btn-theme-toggle" style="background-color: #f3e8ff; color: #6b21a8; border-color: #e9d5ff;" onclick="rotateFont()">🔤 Mudar Fonte</button>
-        </div>
+<div id="control-panel">
+    <div class="panel-title">PAINEL DE CONFIGURAÇÃO E AJUSTES</div>
+    <div class="btn-group">
+        <button class="btn-theme-toggle" onclick="toggleTheme()">🎨 Alternar Tema</button>
+        <button class="btn-theme-toggle" onclick="togglePaperStyle()">📄 Tipo de Papel</button>
+        <button class="btn-theme-toggle" onclick="changeFont()">🔤 Mudar Fonte</button>
+        <button class="btn-backup" onclick="exportData()">💾 Criar Backup</button>
+        <button class="btn-theme-toggle" onclick="triggerImport()">📂 Abrir Backup</button>
     </div>
+    <input type="file" id="import-file" style="display: none;" onchange="importData(event)" accept=".json">
+</div>
 
-    <div class="tabs-container">
-        <button class="tab-button active" onclick="switchTab(event, 'all')">📋 Ver Tudo</button>
-        <button class="tab-button" onclick="switchTab(event, 'inicio')">🏠 Início</button>
-        <button class="tab-button" onclick="switchTab(event, 'tesouros')">💎 Tesouros</button>
-        <button class="tab-button" onclick="switchTab(event, 'ministerio')">🌱 Ministério</button>
-        <button class="tab-button" onclick="switchTab(event, 'vida')">🍷 Vida Cristã</button>
-        <button class="tab-button" onclick="switchTab(event, 'fimdesemana')">🗓️ Fim de Semana</button>
-        <button class="tab-button" onclick="switchTab(event, 'confirmacoes')">✅ Confirmações</button>
-        <button class="tab-button" onclick="switchTab(event, 'eventos')">📅 Eventos</button>
-        <button class="tab-button" onclick="switchTab(event, 'notes')">📝 Notas</button>
-        <button class="tab-button" onclick="switchTab(event, 'historico')">📜 Histórico</button>
-    </div>
+<!-- CONTAINER DE ABAS EXPANDIDO COM SERVIÇO DE CAMPO -->
+<div class="tabs-container">
+    <button class="tab-button active" onclick="switchTab('reuniao-meio')">Meio de Semana</button>
+    <button class="tab-button" onclick="switchTab('reuniao-fim')">Fim de Semana</button>
+    <button class="tab-button" onclick="switchTab('tab-campo')">Serviço de Campo</button>
+    <button class="tab-button" onclick="switchTab('tab-confirmacoes')">Confirmações</button>
+    <button class="tab-button" onclick="switchTab('tab-eventos')">Eventos</button>
+    <button class="tab-button" onclick="switchTab('tab-limpeza')">Limpeza</button>
+</div>
 
-    <div class="document-container" id="printable-document">
-        
+<!-- ÁREA DO DOCUMENTO PRINCIPAL -->
+<div class="document-container" id="capture-target">
+    
+    <!-- CONTEÚDO: REUNIÃO MEIO DE SEMANA -->
+    <div id="reuniao-meio" class="tab-content active-content">
         <div class="refined-header">
-            <h1 id="field-main-title" class="local-save" contenteditable="false">Esboço do presidente</h1>
+            <h1 contenteditable="false" id="title-meio">NOSSA VIDA E MINISTÉRIO CRISTÃO</h1>
             <div class="meta-info">
-                <span id="field-location" class="location-badge local-save" contenteditable="false">Alvorada</span>
-                <span class="divider">•</span>
-                <span id="field-date" class="date-badge local-save" contenteditable="false">28/05/2026</span>
+                <span class="location-badge" contenteditable="false" id="loc-meio">Salão do Reino</span>
+                <span class="date-badge" contenteditable="false" id="date-meio">01/06/2026</span>
             </div>
         </div>
 
-        <div id="section-inicio" class="tab-content active-content">
-            <div class="section-banner bg-tesouros" style="background-color: #1e293b;">
-                <span>DADOS GERAIS</span>
-                <div class="banner-controls">
-                    <button class="section-bold-btn" onclick="toggleBoldSelection(this)">✍️ Negrito</button>
-                    <button class="section-lock-btn locked" id="lock-btn-inicio" onclick="toggleSectionLock('inicio', this)">🔒 Trancado</button>
-                </div>
+        <div class="section-banner bg-tesouros">
+            <span>PRESIDENTE</span>
+            <div class="banner-controls">
+                <button class="section-lock-btn locked" onclick="toggleLockSection(this)">🔒 Trancado</button>
+                <button class="section-bold-btn active-bold" onclick="toggleBoldSection(this)">Negrito</button>
             </div>
-            <div id="rows-container-inicio">
-                </div>
-            <div class="section-inline-add">
-                <button class="btn-inline-add-spec" onclick="addGenericRow('inicio', '', '', '')">➕ Adicionar Linha ao Início</button>
+        </div>
+        <div id="container-meio-inicio" data-section-locked="true">
+            <div class="table-row bg-cantico" data-row-id="mi1">
+                <div class="cell col-time" contenteditable="false">19:00</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Cântico Inicial e Oração</div>
+                <div class="cell col-assigned" contenteditable="false">Presidente</div>
             </div>
+            <div class="table-row bg-cantico" data-row-id="mi2">
+                <div class="cell col-time" contenteditable="false">19:05</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Comentários Iniciais</div>
+                <div class="cell col-assigned" contenteditable="false">Presidente</div>
+            </div>
+        </div>
+        <div class="section-inline-add">
+            <span class="btn-inline-add-spec" onclick="addRowSpec('container-meio-inicio', true)">+ Adicionar Linha</span>
+            <span class="btn-inline-add-spec" onclick="addNoteSpec('container-meio-inicio')">+ Adicionar Nota</span>
         </div>
 
-        <div id="section-tesouros" class="tab-content active-content">
-            <div class="section-banner bg-tesouros">
-                <span>TESOUROS DA PALAVRA DE DEUS</span>
-                <div class="banner-controls">
-                    <button class="section-bold-btn" onclick="toggleBoldSelection(this)">✍️ Negrito</button>
-                    <button class="section-lock-btn locked" id="lock-btn-tesouros" onclick="toggleSectionLock('tesouros', this)">🔒 Trancado</button>
-                </div>
+        <div class="section-banner bg-tesouros">
+            <span>TESOUROS DA PALAVRA DE DEUS</span>
+            <div class="banner-controls">
+                <button class="section-lock-btn locked" onclick="toggleLockSection(this)">🔒 Trancado</button>
+                <button class="section-bold-btn active-bold" onclick="toggleBoldSection(this)">Negrito</button>
             </div>
-            <div id="rows-container-tesouros">
-                </div>
-            <div class="section-inline-add">
-                <button class="btn-inline-add-spec" onclick="addGenericRow('tesouros', '', '', '')">➕ Adicionar Linha aos Tesouros</button>
+        </div>
+        <div id="container-tesouros" data-section-locked="true">
+            <div class="table-row" data-row-id="t1">
+                <div class="cell col-time" contenteditable="false">19:10</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Discurso (10 min.)</div>
+                <div class="cell col-assigned" contenteditable="false"></div>
             </div>
+            <div class="table-row" data-row-id="t2">
+                <div class="cell col-time" contenteditable="false">19:20</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Joias Espirituais (10 min.)</div>
+                <div class="cell col-assigned" contenteditable="false"></div>
+            </div>
+            <div class="table-row" data-row-id="t3">
+                <div class="cell col-time" contenteditable="false">19:30</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Leitura da Bíblia (4 min.)</div>
+                <div class="cell col-assigned" contenteditable="false">Estudante</div>
+            </div>
+        </div>
+        <div class="section-inline-add">
+            <span class="btn-inline-add-spec" onclick="addRowSpec('container-tesouros')">+ Adicionar Linha</span>
+            <span class="btn-inline-add-spec" onclick="addNoteSpec('container-tesouros')">+ Adicionar Nota</span>
         </div>
 
-        <div id="section-ministerio" class="tab-content active-content">
-            <div class="section-banner bg-ministerio">
-                <span>FAÇA SEU MELHOR NO MINISTÉRIO</span>
-                <div class="banner-controls">
-                    <button class="section-bold-btn" onclick="toggleBoldSelection(this)">✍️ Negrito</button>
-                    <button class="section-lock-btn locked" id="lock-btn-ministerio" onclick="toggleSectionLock('ministerio', this)">🔒 Trancado</button>
-                </div>
+        <div class="section-banner bg-ministerio">
+            <span>FAÇA SEU MELHOR NO MINISTÉRIO</span>
+            <div class="banner-controls">
+                <button class="section-lock-btn locked" onclick="toggleLockSection(this)">🔒 Trancado</button>
+                <button class="section-bold-btn active-bold" onclick="toggleBoldSection(this)">Negrito</button>
             </div>
-            <div id="rows-container-ministerio">
-                </div>
-            <div class="section-inline-add">
-                <button class="btn-inline-add-spec" onclick="addGenericRow('ministerio', '', '', '')">➕ Adicionar Linha ao Ministério</button>
+        </div>
+        <div id="container-ministerio" data-section-locked="true">
+            <div class="table-row" data-row-id="m1">
+                <div class="cell col-time" contenteditable="false">19:35</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Iniciando Conversas (3 min.)</div>
+                <div class="cell col-assigned" contenteditable="false"></div>
             </div>
+            <div class="table-row" data-row-id="m2">
+                <div class="cell col-time" contenteditable="false">19:39</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Cultivando o Interesse (4 min.)</div>
+                <div class="cell col-assigned" contenteditable="false"></div>
+            </div>
+            <div class="table-row" data-row-id="m3">
+                <div class="cell col-time" contenteditable="false">19:44</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Fazendo Discípulos (5 min.)</div>
+                <div class="cell col-assigned" contenteditable="false"></div>
+            </div>
+        </div>
+        <div class="section-inline-add">
+            <span class="btn-inline-add-spec" onclick="addRowSpec('container-ministerio')">+ Adicionar Linha</span>
+            <span class="btn-inline-add-spec" onclick="addNoteSpec('container-ministerio')">+ Adicionar Nota</span>
         </div>
 
-        <div id="section-vida" class="tab-content active-content">
-            <div class="section-banner bg-vida">
-                <span>NOSSA VIDA CRISTÃ</span>
-                <div class="banner-controls">
-                    <button class="section-bold-btn" onclick="toggleBoldSelection(this)">✍️ Negrito</button>
-                    <button class="section-lock-btn locked" id="lock-btn-vida" onclick="toggleSectionLock('vida', this)">🔒 Trancado</button>
-                </div>
-            </div>
-            <div id="rows-container-vida">
-                </div>
-            <div class="section-inline-add">
-                <button class="btn-inline-add-spec" onclick="addGenericRow('vida', '', '', '')">➕ Adicionar Linha à Vida Cristã</button>
+        <div class="section-banner bg-vida">
+            <span>NOSSA VIDA CRISTÃ</span>
+            <div class="banner-controls">
+                <button class="section-lock-btn locked" onclick="toggleLockSection(this)">🔒 Trancado</button>
+                <button class="section-bold-btn active-bold" onclick="toggleBoldSection(this)">Negrito</button>
             </div>
         </div>
-        <div id="section-fimdesemana" class="tab-content active-content">
-            <div class="section-banner bg-tesouros" style="background-color: #2b4c7e;">
-                <span>REUNIÃO DE FIM DE SEMANA</span>
-                <div class="banner-controls">
-                    <button class="section-bold-btn" onclick="toggleBoldSelection(this)">✍️ Negrito</button>
-                    <button class="section-lock-btn locked" id="lock-btn-fimdesemana" onclick="toggleSectionLock('fimdesemana', this)">🔒 Trancado</button>
-                </div>
+        <div id="container-vida" data-section-locked="true">
+            <div class="table-row bg-cantico" data-row-id="v1">
+                <div class="cell col-time" contenteditable="false">19:50</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Cântico Intermediário</div>
+                <div class="cell col-assigned" contenteditable="false"></div>
             </div>
-            <div id="rows-container-fimdesemana">
-                </div>
-            <div class="section-inline-add">
-                <button class="btn-inline-add-spec" onclick="addGenericRow('fimdesemana', '', '', '')">➕ Adicionar Linha ao Fim de Semana</button>
+            <div class="table-row" data-row-id="v2">
+                <div class="cell col-time" contenteditable="false">19:55</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Parte 1 (15 min.)</div>
+                <div class="cell col-assigned" contenteditable="false"></div>
             </div>
-        </div>
-
-        <div id="section-confirmacoes" class="tab-content">
-            <div class="section-banner" style="background-color: #059669;">
-                <span>CONTROLE DE CONFIRMAÇÕES</span>
-                <div class="banner-controls">
-                    <button class="section-bold-btn" onclick="toggleBoldSelection(this)">✍️ Negrito</button>
-                    <button class="section-lock-btn locked" id="lock-btn-confirmacoes" onclick="toggleSectionLock('confirmacoes', this)">🔒 Trancado</button>
-                </div>
+            <div class="table-row" data-row-id="v3">
+                <div class="cell col-time" contenteditable="false">20:10</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Estudo Bíblico de Congregação (30 min.)</div>
+                <div class="cell col-assigned" contenteditable="false"></div>
             </div>
-            <div id="confirm-rows-container">
-                <div class="table-row" style="background-color: #f1f5f9; font-weight: bold;">
-                    <div class="cell col-content" style="width: 45%; background-color: #e2e8f0;">Designado (Irmão/Irmã)</div>
-                    <div class="cell col-assigned" style="width: 40%; background-color: #e2e8f0;">Parte / Designação</div>
-                    <div class="cell col-check" style="background-color: #e2e8f0;">Ok?</div>
-                </div>
-                </div>
-            <div style="text-align: center; margin-top: 10px;">
-                <button class="btn-action-confirm btn-add" style="width: 90%;" onclick="addConfirmationRow()">➕ Adicionar Linha à Confirmação</button>
+            <div class="table-row bg-cantico" data-row-id="v4">
+                <div class="cell col-time" contenteditable="false">20:40</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Comentários Finais</div>
+                <div class="cell col-assigned" contenteditable="false">Presidente</div>
+            </div>
+            <div class="table-row bg-cantico" data-row-id="v5">
+                <div class="cell col-time" contenteditable="false">20:45</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Cântico Final e Oração</div>
+                <div class="cell col-assigned" contenteditable="false"></div>
             </div>
         </div>
-
-        <div id="section-eventos" class="tab-content">
-            <div class="section-banner" style="background-color: #4b5563;">
-                <span>EVENTOS E PROGRAMAÇÕES ESPECIAIS</span>
-                <div class="banner-controls">
-                    <button class="section-bold-btn" onclick="toggleBoldSelection(this)">✍️ Negrito</button>
-                    <button class="section-lock-btn locked" id="lock-btn-eventos" onclick="toggleSectionLock('eventos', this)">🔒 Trancado</button>
-                </div>
-            </div>
-            <div id="eventos-rows-container" style="margin-top: 10px;">
-                <div class="table-row" style="background-color: #f1f5f9; font-weight: bold;">
-                    <div class="cell col-time" style="width: 25%; max-width: 90px; background-color: #e2e8f0;">Data / Período</div>
-                    <div class="cell col-content" style="width: 75%; background-color: #e2e8f0;">Descrição do Evento Especial</div>
-                </div>
-                </div>
-            <div style="text-align: center; margin-top: 10px;">
-                <button class="btn-action-confirm btn-add" style="width: 90%; background-color: #f3f4f6; color: #374151; border: 1px dashed #9ca3af;" onclick="addEventRow()">➕ Adicionar Novo Evento</button>
-            </div>
+        <div class="section-inline-add">
+            <span class="btn-inline-add-spec" onclick="addRowSpec('container-vida', true)">+ Adicionar Linha</span>
+            <span class="btn-inline-add-spec" onclick="addNoteSpec('container-vida')">+ Adicionar Nota</span>
         </div>
-
-        <div id="section-notas" class="tab-content">
-            <div class="section-banner" style="background-color: #475569;">
-                <span>BLOCO DE NOTAS E LEMBRETES</span>
-                <div class="banner-controls">
-                    <button class="section-bold-btn" onclick="toggleBoldSelection(this)">✍️ Negrito</button>
-                    <button class="section-lock-btn locked" id="lock-btn-notas" onclick="toggleSectionLock('notas', this)">🔒 Trancado</button>
-                </div>
-            </div>
-            <div id="notes-container" style="margin-top: 10px;">
-                </div>
-            <div style="text-align: center; margin-top: 15px;">
-                <button class="btn-action-confirm btn-add" style="background-color: #e0f2fe; color: #0369a1; width: 90%;" onclick="addNewNote()">➕ Criar Nova Nota</button>
-            </div>
-        </div>
-
-        <div id="section-historico" class="tab-content">
-            <div class="section-banner" style="background-color: #1e293b;">
-                <span>HISTÓRICO DE DESIGNAÇÕES</span>
-                <span style="font-size: 10px; opacity: 0.8;">Evite Repetições</span>
-            </div>
-            <div style="margin-top: 10px;" class="history-controls">
-                <button class="btn-print" style="background-color: #4f46e5; border-radius: 8px;" onclick="generateHistoryFromCurrentBoard()">🔄 Atualizar Histórico com o Esboço Atual</button>
-                
-                <button class="history-collapse-btn" id="btn-toggle-history-view" onclick="toggleHistoryContent()">🔽 Recolher Lista do Histórico</button>
-                
-                <div id="history-collapsible-wrapper" class="history-collapse-content">
-                    <input type="text" class="history-search" id="history-search-input" placeholder="🔍 Pesquisar irmão ou parte no histórico..." oninput="filterHistoryList()">
-                    <div class="history-list" id="history-display-container" style="margin-top: 8px;">
-                        </div>
-                </div>
-            </div>
-            <div style="display: flex; gap: 4px; margin-top: 8px;" class="history-controls">
-                <input type="text" id="manual-hist-name" placeholder="Nome" class="history-search" style="width:40%;">
-                <input type="text" id="manual-hist-part" placeholder="Parte" class="history-search" style="width:40%;">
-                <button class="btn-add" style="border-radius:8px; padding:2px;" onclick="addManualHistoryRecord()">➕</button>
-            </div>
-        </div>
-
     </div>
 
-    <script>
-        let currentThemeIndex = 0;
-        const themes = ['default', 'clear-blue', 'clear-green'];
+    <!-- CONTEÚDO: REUNIÃO FIM DE SEMANA -->
+    <div id="reuniao-fim" class="tab-content">
+        <div class="refined-header">
+            <h1 contenteditable="false" id="title-fim">REUNIÃO PÚBLICA E ESTUDO DE A SENTINELA</h1>
+            <div class="meta-info">
+                <span class="location-badge" contenteditable="false" id="loc-fim">Salão do Reino</span>
+                <span class="date-badge" contenteditable="false" id="date-fim">07/06/2026</span>
+            </div>
+        </div>
+
+        <div class="section-banner bg-tesouros">
+            <span>PRESIDENTE</span>
+            <div class="banner-controls">
+                <button class="section-lock-btn locked" onclick="toggleLockSection(this)">🔒 Trancado</button>
+                <button class="section-bold-btn active-bold" onclick="toggleBoldSection(this)">Negrito</button>
+            </div>
+        </div>
+        <div id="container-fim-inicio" data-section-locked="true">
+            <div class="table-row bg-cantico" data-row-id="fi1">
+                <div class="cell col-time" contenteditable="false">09:00</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Cântico Inicial e Oração</div>
+                <div class="cell col-assigned" contenteditable="false">Presidente</div>
+            </div>
+        </div>
+        <div class="section-inline-add">
+            <span class="btn-inline-add-spec" onclick="addRowSpec('container-fim-inicio', true)">+ Adicionar Linha</span>
+            <span class="btn-inline-add-spec" onclick="addNoteSpec('container-fim-inicio')">+ Adicionar Nota</span>
+        </div>
+
+        <div class="section-banner bg-tesouros">
+            <span>DISCURSO PÚBLICO</span>
+            <div class="banner-controls">
+                <button class="section-lock-btn locked" onclick="toggleLockSection(this)">🔒 Trancado</button>
+                <button class="section-bold-btn active-bold" onclick="toggleBoldSection(this)">Negrito</button>
+            </div>
+        </div>
+        <div id="container-discurso" data-section-locked="true">
+            <div class="table-row" data-row-id="f1">
+                <div class="cell col-time" contenteditable="false">09:05</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Tema do Discurso Público:</div>
+                <div class="cell col-assigned" contenteditable="false">Orador:</div>
+            </div>
+        </div>
+        <div class="section-inline-add">
+            <span class="btn-inline-add-spec" onclick="addRowSpec('container-discurso')">+ Adicionar Linha</span>
+            <span class="btn-inline-add-spec" onclick="addNoteSpec('container-discurso')">+ Adicionar Nota</span>
+        </div>
+
+        <div class="section-banner bg-ministerio">
+            <span>ESTUDO DE A SENTINELA</span>
+            <div class="banner-controls">
+                <button class="section-lock-btn locked" onclick="toggleLockSection(this)">🔒 Trancado</button>
+                <button class="section-bold-btn active-bold" onclick="toggleBoldSection(this)">Negrito</button>
+            </div>
+        </div>
+        <div id="container-sentinela" data-section-locked="true">
+            <div class="table-row" data-row-id="f2">
+                <div class="cell col-time" contenteditable="false">09:35</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Leitura do Artigo de Estudo</div>
+                <div class="cell col-assigned" contenteditable="false">Dirigente:<br>Leitor:</div>
+            </div>
+            <div class="table-row bg-cantico" data-row-id="f3">
+                <div class="cell col-time" contenteditable="false">10:40</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Cântico Final e Oração</div>
+                <div class="cell col-assigned" contenteditable="false"></div>
+            </div>
+        </div>
+        <div class="section-inline-add">
+            <span class="btn-inline-add-spec" onclick="addRowSpec('container-sentinela', true)">+ Adicionar Linha</span>
+            <span class="btn-inline-add-spec" onclick="addNoteSpec('container-sentinela')">+ Adicionar Nota</span>
+        </div>
+    </div>
+
+    <!-- CONTEÚDO: NOVA ABA - SERVIÇO DE CAMPO -->
+    <div id="tab-campo" class="tab-content">
+        <div class="refined-header">
+            <h1 contenteditable="false">ARRANJO DE SERVIÇO DE CAMPO</h1>
+            <div class="meta-info">
+                <span class="location-badge" contenteditable="false">Grupos e Saídas</span>
+            </div>
+        </div>
+        <div class="section-banner bg-tesouros">
+            <span>ESCALA DE DIRIGENTES E PONTOS de ENCONTRO</span>
+            <div class="banner-controls">
+                <button class="section-lock-btn locked" onclick="toggleLockSection(this)">🔒 Trancado</button>
+                <button class="section-bold-btn active-bold" onclick="toggleBoldSection(this)">Negrito</button>
+            </div>
+        </div>
+        <div id="container-campo" data-section-locked="true">
+            <div class="table-row">
+                <div class="cell col-time" contenteditable="false">Dia</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Ponto de Encontro Central</div>
+                <div class="cell col-assigned" contenteditable="false">Dirigente:</div>
+            </div>
+        </div>
+        <div class="section-inline-add">
+            <span class="btn-inline-add-spec" onclick="addRowSpec('container-campo')">+ Adicionar Linha</span>
+            <span class="btn-inline-add-spec" onclick="addNoteSpec('container-campo')">+ Adicionar Nota</span>
+        </div>
+    </div>
+        <!-- CONTEÚDO: CONFIRMAÇÕES -->
+    <div id="tab-confirmacoes" class="tab-content">
+        <div class="refined-header">
+            <h1 contenteditable="false">CONTROLE DE CONFIRMAÇÕES</h1>
+            <div class="meta-info">
+                <span class="location-badge" contenteditable="false">Status de Designações</span>
+            </div>
+        </div>
+        <div class="section-banner bg-tesouros">
+            <span>VERIFICAÇÃO DE DISPONIBILIDADE</span>
+            <div class="banner-controls">
+                <button class="section-lock-btn locked" onclick="toggleLockSection(this)">🔒 Trancado</button>
+                <button class="section-bold-btn active-bold" onclick="toggleBoldSection(this)">Negrito</button>
+            </div>
+        </div>
+        <div id="container-confirmacoes" data-section-locked="true">
+            <div class="table-row">
+                <div class="cell col-time" contenteditable="false">Meio</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Presidente da Reunião (Confirmar)</div>
+                <div class="cell col-assigned" contenteditable="false">Status: Pendente</div>
+            </div>
+            <div class="table-row">
+                <div class="cell col-time" contenteditable="false">Fim</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Orador Local / Convidado</div>
+                <div class="cell col-assigned" contenteditable="false">Status: Pendente</div>
+            </div>
+        </div>
+        <div class="section-inline-add">
+            <span class="btn-inline-add-spec" onclick="addRowSpec('container-confirmacoes')">+ Adicionar Linha</span>
+            <span class="btn-inline-add-spec" onclick="addNoteSpec('container-confirmacoes')">+ Adicionar Nota</span>
+        </div>
+    </div>
+
+    <!-- CONTEÚDO: EVENTOS -->
+    <div id="tab-eventos" class="tab-content">
+        <div class="refined-header">
+            <h1 contenteditable="false">CRONOGRAMA DE EVENTOS E VISITAS</h1>
+            <div class="meta-info">
+                <span class="location-badge" contenteditable="false">Assembleias, Visitas e Especiais</span>
+            </div>
+        </div>
+        <div class="section-banner bg-ministerio">
+            <span>PROGRAMAÇÃO EXCEPCIONAL</span>
+            <div class="banner-controls">
+                <button class="section-lock-btn locked" onclick="toggleLockSection(this)">🔒 Trancado</button>
+                <button class="section-bold-btn active-bold" onclick="toggleBoldSection(this)">Negrito</button>
+            </div>
+        </div>
+        <div id="container-eventos" data-section-locked="true">
+            <div class="table-row">
+                <div class="cell col-time" contenteditable="false">--:--</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Clique aqui para começar a montar o evento...</div>
+                <div class="cell col-assigned" contenteditable="false">Designado</div>
+            </div>
+        </div>
+        <div class="section-inline-add">
+            <span class="btn-inline-add-spec" onclick="addRowSpec('container-eventos')">+ Adicionar Linha</span>
+            <span class="btn-inline-add-spec" onclick="addNoteSpec('container-eventos')">+ Adicionar Nota</span>
+        </div>
+    </div>
+
+    <!-- CONTEÚDO: LIMPEZA -->
+    <div id="tab-limpeza" class="tab-content">
+        <div class="refined-header">
+            <h1 contenteditable="false">PROGRAMAÇÃO DE LIMPEZA E MANUTENÇÃO</h1>
+            <div class="meta-info">
+                <span class="location-badge" contenteditable="false">Organização dos Grupos</span>
+            </div>
+        </div>
+        <div class="section-banner bg-vida">
+            <span>ESCALA DOS GRUPOS DO SALÃO</span>
+            <div class="banner-controls">
+                <button class="section-lock-btn locked" onclick="toggleLockSection(this)">🔒 Trancado</button>
+                <button class="section-bold-btn active-bold" onclick="toggleBoldSection(this)">Negrito</button>
+            </div>
+        </div>
+        <div id="container-limpeza" data-section-locked="true">
+            <div class="table-row">
+                <div class="cell col-time" contenteditable="false">Grupo</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Indicadores e Varrição (Seção A)</div>
+                <div class="cell col-assigned" contenteditable="false">Dirigente do Grupo</div>
+            </div>
+            <div class="table-row">
+                <div class="cell col-time" contenteditable="false">Grupo</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Sanitários e Áreas Comuns (Seção B)</div>
+                <div class="cell col-assigned" contenteditable="false">Dirigente do Grupo</div>
+            </div>
+        </div>
+        <div class="section-inline-add">
+            <span class="btn-inline-add-spec" onclick="addRowSpec('container-limpeza')">+ Adicionar Linha</span>
+            <span class="btn-inline-add-spec" onclick="addNoteSpec('container-limpeza')">+ Adicionar Nota</span>
+        </div>
+    </div>
+
+</div> <!-- FIM DO DOCUMENT-CONTAINER -->
+
+<script>
+    // Gerenciamento das Fontes Disponíveis
+    const availableFonts = [
+        "'Plus Jakarta Sans', sans-serif",
+        "'Inter', sans-serif",
+        "'Open Sans', sans-serif",
+        "'Roboto', sans-serif"
+    ];
+    let currentFontIndex = 0;
+
+    function changeFont() {
+        currentFontIndex = (currentFontIndex + 1) % availableFonts.length;
+        document.documentElement.style.setProperty('--app-font', availableFonts[currentFontIndex]);
+    }
+
+    // Gerenciamento de Abas Geral
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active-content'));
         
-        let currentPaperIndex = 0;
-        const papers = ['default', 'soft-blue', 'modern-gray'];
-
-        let currentFontIndex = 0;
-        const fonts = [
-            "'Plus Jakarta Sans', sans-serif",
-            "'Roboto', sans-serif",
-            "'Inter', sans-serif",
-            "'Open Sans', sans-serif"
-        ];
-
-        let historyData = [];
-        let lockStates = { inicio: true, tesouros: true, ministerio: true, vida: true, fimdesemana: true, confirmacoes: true, eventos: true, notas: true };
+        const activeBtn = Array.from(document.querySelectorAll('.tab-button')).find(btn => btn.getAttribute('onclick').includes(tabId));
+        if(activeBtn) activeBtn.classList.add('active');
         
-        let isLoading = true;
+        const targetContent = document.getElementById(tabId);
+        if(targetContent) targetContent.classList.add('active-content');
+    }
 
-        function rotateTheme() {
-            currentThemeIndex = (currentThemeIndex + 1) % themes.length;
-            applyTheme(themes[currentThemeIndex]);
-            localStorage.setItem('leandro-app-theme', themes[currentThemeIndex]);
-        }
-
-        function applyTheme(themeName) {
-            const body = document.body;
+    // Alternador de Temas Visuais
+    function toggleTheme() {
+        const body = document.body;
+        const currentTheme = body.getAttribute('data-theme');
+        if (!currentTheme) {
+            body.setAttribute('data-theme', 'clear-blue');
+        } else if (currentTheme === 'clear-blue') {
+            body.setAttribute('data-theme', 'clear-green');
+        } else {
             body.removeAttribute('data-theme');
-            if (themeName !== 'default') {
-                body.setAttribute('data-theme', themeName);
-            }
         }
+    }
 
-        // --- FUNÇÃO PARA ALTERNAR A COR DO PAPEL ---
-        function rotatePaperColor() {
-            currentPaperIndex = (currentPaperIndex + 1) % papers.length;
-            applyPaperColor(papers[currentPaperIndex]);
-            localStorage.setItem('leandro-app-paper', papers[currentPaperIndex]);
-        }
-
-        function applyPaperColor(paperName) {
-            const body = document.body;
+    // Alternador do Estilo do Papel de Fundo
+    function togglePaperStyle() {
+        const body = document.body;
+        const currentPaper = body.getAttribute('data-paper');
+        if (!currentPaper) {
+            body.setAttribute('data-paper', 'soft-blue');
+        } else if (currentPaper === 'soft-blue') {
+            body.setAttribute('data-paper', 'modern-gray');
+        } else {
             body.removeAttribute('data-paper');
-            if (paperName !== 'default') {
-                body.setAttribute('data-paper', paperName);
+        }
+    }
+
+    // Função universal para mover linhas para cima ou para baixo
+    function moveRow(button, direction) {
+        const row = button.closest('.table-row');
+        if (!row) return;
+        
+        const container = row.parentElement;
+        
+        if (direction === 'up') {
+            const previous = row.previousElementSibling;
+            if (previous && previous.classList.contains('table-row')) {
+                container.insertBefore(row, previous);
+            }
+        } else if (direction === 'down') {
+            const next = row.nextElementSibling;
+            if (next && next.classList.contains('table-row')) {
+                container.insertBefore(next, row);
             }
         }
+    }
 
-        // --- FUNÇÃO PARA ALTERNAR FONTES ---
-        function rotateFont() {
-            currentFontIndex = (currentFontIndex + 1) % fonts.length;
-            applyFont(fonts[currentFontIndex]);
-            localStorage.setItem('leandro-app-font-idx', currentFontIndex);
+    // Criação Dinâmica de Linhas
+    function addRowSpec(containerId, isCantico = false) {
+        const container = document.getElementById(containerId);
+        const rowId = 'row-' + Date.now();
+        
+        const banner = container.previousElementSibling;
+        const isLocked = container.getAttribute('data-section-locked') === 'true';
+        const isBold = banner && banner.querySelector('.section-bold-btn') && banner.querySelector('.section-bold-btn').classList.contains('active-bold');
+        
+        const row = document.createElement('div');
+        row.className = isCantico ? 'table-row bg-cantico' : 'table-row';
+        row.setAttribute('data-row-id', rowId);
+        
+        const editableStatus = isLocked ? 'false' : 'true';
+        const boldClass = isBold ? 'text-bold-active' : '';
+        
+        row.innerHTML = `
+            <div class="cell col-time" contenteditable="${editableStatus}">00:00</div>
+            <div class="cell col-content ${boldClass}" contenteditable="${editableStatus}">Nova Linha de Programação</div>
+            <div class="cell col-assigned" contenteditable="${editableStatus}"></div>
+        `;
+        
+        setupRowInteraction(row);
+        container.appendChild(row);
+    }
+
+    // Criação Dinâmica de Blocos de Notas
+    function addNoteSpec(containerId) {
+        const container = document.getElementById(containerId);
+        const noteId = 'note-' + Date.now();
+        
+        const noteBlock = document.createElement('div');
+        noteBlock.className = 'note-block';
+        noteBlock.setAttribute('data-note-id', noteId);
+        
+        noteBlock.innerHTML = `
+            <div class="note-editable" contenteditable="true">Clique para digitar sua observação...</div>
+            <button class="btn-delete-note" onclick="this.parentElement.remove()">❌ Excluir Nota</button>
+            <div style="clear:both;"></div>
+        `;
+        
+        container.appendChild(noteBlock);
+    }
+
+    // Menu Flutuante Lateral Condicional (Só aparece se a seção estiver desimpedida)
+    function setupRowInteraction(row) {
+        row.addEventListener('mouseenter', function() {
+            const container = this.parentElement;
+            if (!container) return;
+            
+            if (container.getAttribute('data-section-locked') === 'true') return;
+            if (this.querySelector('.row-controls')) return;
+            
+            const controls = document.createElement('div');
+            controls.className = 'row-controls';
+            
+            const btnUp = document.createElement('button');
+            btnUp.className = 'btn-row-action';
+            btnUp.innerText = '▲';
+            btnUp.onclick = () => moveRow(btnUp, 'up');
+            
+            const btnDown = document.createElement('button');
+            btnDown.className = 'btn-row-action';
+            btnDown.innerText = '▼';
+            btnDown.onclick = () => moveRow(btnDown, 'down');
+            
+            const btnDel = document.createElement('button');
+            btnDel.className = 'btn-row-action btn-row-del';
+            btnDel.innerText = '❌';
+            btnDel.onclick = () => this.remove();
+            
+            controls.appendChild(btnUp);
+            controls.appendChild(btnDown);
+            controls.appendChild(btnDel);
+            this.appendChild(controls);
+        });
+        
+        row.addEventListener('mouseleave', function() {
+            const controls = this.querySelector('.row-controls');
+            if (controls) controls.remove();
+        });
+    }
+
+    // Tranca e Destranca Textos de Seções Específicas
+    function toggleLockSection(btn) {
+        const banner = btn.closest('.section-banner');
+        const nextContainer = banner.nextElementSibling;
+        const tabContent = btn.closest('.tab-content');
+        const header = tabContent.querySelector('.refined-header');
+        
+        if (btn.classList.contains('locked')) {
+            btn.classList.remove('locked');
+            btn.innerText = '🔓 Livre';
+            nextContainer.setAttribute('data-section-locked', 'false');
+            
+            if(header) {
+                header.querySelectorAll('h1, .location-badge, .date-badge').forEach(el => el.setAttribute('contenteditable', 'true'));
+            }
+            nextContainer.querySelectorAll('.cell').forEach(cell => {
+                cell.setAttribute('contenteditable', 'true');
+            });
+        } else {
+            btn.classList.add('locked');
+            btn.innerText = '🔒 Trancado';
+            nextContainer.setAttribute('data-section-locked', 'true');
+            
+            nextContainer.querySelectorAll('.row-controls').forEach(ctrl => ctrl.remove());
+            
+            if(header) {
+                header.querySelectorAll('h1, .location-badge, .date-badge').forEach(el => el.setAttribute('contenteditable', 'false'));
+            }
+            nextContainer.querySelectorAll('.cell').forEach(cell => {
+                cell.setAttribute('contenteditable', 'false');
+            });
         }
+    }
 
-        function applyFont(fontValue) {
-            document.documentElement.style.setProperty('--app-font', fontValue);
+    // Aplica Negrito Coletivo nas Células de Conteúdo da Seção
+    function toggleBoldSection(btn) {
+        const banner = btn.closest('.section-banner');
+        const nextContainer = banner.nextElementSibling;
+        
+        if (btn.classList.contains('active-bold')) {
+            btn.classList.remove('active-bold');
+            nextContainer.querySelectorAll('.col-content').forEach(cell => {
+                cell.classList.remove('text-bold-active');
+            });
+        } else {
+            btn.classList.add('active-bold');
+            nextContainer.querySelectorAll('.col-content').forEach(cell => {
+                cell.classList.add('text-bold-active');
+            });
         }
+    }
 
-        // --- FUNÇÃO PARA ATIVAR/DESATIVAR MODO NEGRITO EM TEMPO REAL ---
-        function toggleBoldSelection(btn) {
-            // Executa o comando nativo de negrito caso haja texto selecionado
+    // LÓGICA DO MENU FLUTUANTE DE FORMATAÇÃO (NEGRITO/ITÁLICO PARA SELEÇÃO)
+    let formatToolbar = null;
+
+    function createFormatToolbar() {
+        formatToolbar = document.createElement('div');
+        formatToolbar.className = 'text-format-toolbar';
+        formatToolbar.style.display = 'none';
+
+        const btnBold = document.createElement('button');
+        btnBold.innerText = 'Negrito';
+        btnBold.onmousedown = function(e) {
+            e.preventDefault(); 
             document.execCommand('bold', false, null);
+        };
+
+        const btnItalic = document.createElement('button');
+        btnItalic.innerHTML = '<em>Itálico</em>';
+        btnItalic.onmousedown = function(e) {
+            e.preventDefault();
+            document.execCommand('italic', false, null);
+        };
+
+        formatToolbar.appendChild(btnBold);
+        formatToolbar.appendChild(btnItalic);
+        document.body.appendChild(formatToolbar);
+    }
+
+    function checkTextSelection() {
+        const selection = window.getSelection();
+        if (!selection || selection.isCollapsed || selection.toString().trim() === "") {
+            if (formatToolbar) formatToolbar.style.display = 'none';
+            return;
+        }
+
+        let anchor = selection.anchorNode;
+        if (anchor && anchor.nodeType === 3) {
+            anchor = anchor.parentNode;
+        }
+        
+        if (anchor && anchor.closest('[contenteditable="true"]')) {
+            const range = selection.getRangeAt(0);
+            const rect = range.getBoundingClientRect();
             
-            // Alterna o estado visual e o comportamento de digitação futura
-            if(btn) {
-                const isActive = btn.classList.toggle('active-bold');
-                
-                // Sincroniza todos os botões de negrito das abas com o mesmo estado
-                document.querySelectorAll('.section-bold-btn').forEach(b => {
-                    if(isActive) b.classList.add('active-bold');
-                    else b.classList.remove('active-bold');
-                });
-
-                // Ativa o estado no documento para o que for digitado em seguida
-                if(isActive) {
-                    document.execCommand('styleWithCSS', false, false);
-                }
+            if (formatToolbar) {
+                formatToolbar.style.display = 'flex';
+                formatToolbar.style.left = `${rect.left + window.scrollX + (rect.width / 2) - (formatToolbar.offsetWidth / 2)}px`;
+                formatToolbar.style.top = `${rect.top + window.scrollY - formatToolbar.offsetHeight - 8}px`;
             }
-            saveAllData();
+        } else {
+            if (formatToolbar) formatToolbar.style.display = 'none';
         }
+    }
 
-        // Garante que o estado de negrito permaneça ativo se o botão estiver ligado
-        document.addEventListener('keydown', function(e) {
-            const activeBoldBtn = document.querySelector('.section-bold-btn.active-bold');
-            if (activeBoldBtn && e.target.hasAttribute('contenteditable')) {
-                // Se o comando de negrito não estiver ativo no cursor atual, força a ativação
-                if(!document.queryCommandState('bold')) {
-                    document.execCommand('bold', false, null);
-                }
-            }
-        });
+    // Inicialização do Menu de Formatação e Listeners
+    createFormatToolbar();
+    document.addEventListener('mouseup', checkTextSelection);
+    document.addEventListener('keyup', checkTextSelection);
 
-        // --- FUNÇÃO PARA EXPANDIR / RECOLHER HISTÓRICO ---
-        function toggleHistoryContent() {
-            const wrapper = document.getElementById('history-collapsible-wrapper');
-            const btn = document.getElementById('btn-toggle-history-view');
-            if (wrapper.style.display === 'none') {
-                wrapper.style.display = 'block';
-                btn.innerText = '🔽 Recolher Lista do Histórico';
-            } else {
-                wrapper.style.display = 'none';
-                btn.innerText = '▶️ Expandir Lista do Histórico';
-            }
-        }
+    // Inicialização automática das interações em todas as tabelas
+    document.querySelectorAll('.table-row').forEach(row => {
+        setupRowInteraction(row);
+    });
 
-        // --- GERENCIAMENTO DE LINHAS ESTRUTURAIS ---
-        function addGenericRow(sectionId, time = "00:00", content = "Nova Parte", assigned = "Nome", isCantico = false) {
-            const container = document.getElementById(`rows-container-${sectionId}`);
-            if(!container) return;
-            const isLocked = lockStates[sectionId] !== undefined ? lockStates[sectionId] : true;
-            
-            const row = document.createElement('div');
-            row.className = `table-row structural-row ${isCantico ? 'bg-cantico' : ''}`;
-            
-            row.innerHTML = `
-                <div class="cell col-time editable-field-${sectionId} local-dyn-save" contenteditable="${!isLocked}">${time}</div>
-                <div class="cell col-content editable-field-${sectionId} local-dyn-save" contenteditable="${!isLocked}">${content}</div>
-                <div class="cell col-assigned editable-field-${sectionId} local-dyn-save" contenteditable="${!isLocked}">${assigned}</div>
-                <div class="row-controls" style="display: ${isLocked ? 'none' : 'flex'}">
-                    <button class="btn-row-action" onclick="moveRow(this, 'up')">▲</button>
-                    <button class="btn-row-action" onclick="moveRow(this, 'down')">▼</button>
-                    <button class="btn-row-action btn-row-del" onclick="deleteRow(this)">❌</button>
-                </div>
-            `;
-            container.appendChild(row);
-            if (!isLoading) saveAllData();
-        }
+    // Módulos de Exportação e Importação de Backup Geral
+    function exportData() {
+        const data = {
+            targetHTML: document.getElementById('capture-target').innerHTML,
+            currentFont: document.documentElement.style.getPropertyValue('--app-font')
+        };
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
+        const downloadAnchor = document.createElement('a');
+        downloadAnchor.setAttribute("href", dataStr);
+        downloadAnchor.setAttribute("download", "Backup_Geral_Leandro.json");
+        document.body.appendChild(downloadAnchor);
+        downloadAnchor.click();
+        downloadAnchor.remove();
+    }
 
-        function moveRow(button, direction) {
-            const row = button.closest('.table-row');
-            const container = row.parentElement;
-            if (direction === 'up' && row.previousElementSibling && !row.previousElementSibling.style.fontWeight) {
-                container.insertBefore(row, row.previousElementSibling);
-            } else if (direction === 'down' && row.nextElementSibling) {
-                container.insertBefore(row.nextElementSibling, row);
-            }
-            saveAllData();
-        }
+    function triggerImport() {
+        document.getElementById('import-file').click();
+    }
 
-        function deleteRow(button) {
-            if(confirm("Deseja realmente excluir esta linha?")) {
-                button.closest('.table-row').remove();
-                saveAllData();
-            }
-        }
-
-        // --- ABA CONFIRMAÇÕES ---
-        function addConfirmationRow(name = "Nome do Irmão", part = "Parte dele", checked = false) {
-            const container = document.getElementById('confirm-rows-container');
-            const isLocked = lockStates['confirmacoes'] !== undefined ? lockStates['confirmacoes'] : true;
-            
-            const newRow = document.createElement('div');
-            newRow.className = 'table-row dynamic-confirm-row';
-            newRow.innerHTML = `
-                <div class="cell col-content editable-field-confirmacoes local-dyn-save" style="width: 45%; font-weight: normal;" contenteditable="${!isLocked}">${name}</div>
-                <div class="cell col-assigned editable-field-confirmacoes local-dyn-save" style="width: 40%;" contenteditable="${!isLocked}">${part}</div>
-                <div class="cell col-check"><input type="checkbox" class="checkbox-confirm" ${checked ? 'checked' : ''} onchange="saveAllData()"></div>
-                <div class="row-controls" style="display: ${isLocked ? 'none' : 'flex'}">
-                    <button class="btn-row-action" onclick="moveRow(this, 'up')">▲</button>
-                    <button class="btn-row-action" onclick="moveRow(this, 'down')">▼</button>
-                    <button class="btn-row-action btn-row-del" onclick="deleteRow(this)">❌</button>
-                </div>
-            `;
-            container.appendChild(newRow);
-            if (!isLoading) saveAllData();
-        }
-
-        // --- ABA EVENTOS ---
-        function addEventRow(date = "00/00", eventDesc = "Descrição do evento...") {
-            const container = document.getElementById('eventos-rows-container');
-            const isLocked = lockStates['eventos'] !== undefined ? lockStates['eventos'] : true;
-            
-            const newRow = document.createElement('div');
-            newRow.className = 'table-row dynamic-event-row';
-            newRow.innerHTML = `
-                <div class="cell col-time editable-field-eventos local-dyn-save" style="width: 25%; max-width: 90px; justify-content: center; text-align: center; font-weight: 600;" contenteditable="${!isLocked}">${date}</div>
-                <div class="cell col-content editable-field-eventos local-dyn-save" style="width: 75%; font-weight: normal;" contenteditable="${!isLocked}">${eventDesc}</div>
-                <div class="row-controls" style="display: ${isLocked ? 'none' : 'flex'}">
-                    <button class="btn-row-action" onclick="moveRow(this, 'up')">▲</button>
-                    <button class="btn-row-action" onclick="moveRow(this, 'down')">▼</button>
-                    <button class="btn-row-action btn-row-del" onclick="deleteRow(this)">❌</button>
-                </div>
-            `;
-            container.appendChild(newRow);
-            if (!isLoading) saveAllData();
-        }
-
-        // --- ABA NOTAS ---
-        function addNewNote(text = "Nova nota/anotação...") {
-            const container = document.getElementById('notes-container');
-            const isLocked = lockStates['notas'] !== undefined ? lockStates['notas'] : true;
-            
-            const newNote = document.createElement('div');
-            newNote.className = 'note-block dynamic-note-row';
-            newNote.innerHTML = `
-                <div class="note-editable editable-field-notas local-dyn-save" contenteditable="${!isLocked}">${text}</div>
-                <button class="btn-delete-note" style="display: ${isLocked ? 'none' : 'block'}" onclick="deleteNote(this)">❌ Excluir</button>
-                <div style="clear: both;"></div>
-            `;
-            container.appendChild(newNote);
-            if (!isLoading) saveAllData();
-        }
-
-        function deleteNote(buttonElement) {
-            buttonElement.parentElement.remove();
-            saveAllData();
-        }
-
-        // --- HISTÓRICO ---
-        function generateHistoryFromCurrentBoard() {
-            const currentDate = document.getElementById('field-date').innerText || "Sem Data";
-            let addedCount = 0;
-
-            document.querySelectorAll('.structural-row').forEach(row => {
-                const parts = row.querySelectorAll('.cell');
-                if(parts.length >= 3){
-                    const contentText = parts[1].innerText.trim();
-                    const rawName = parts[2].innerText.replace(/Presidente:|Oração:|Dirigente:|Leitor:/gi, '').trim();
-                    
-                    if(rawName && rawName.length > 2 && rawName !== "Nome") {
-                        const cleanNames = rawName.split(/&|<br>|\n|,/g).map(n => n.replace(/<\/?[^>]+(>|$)/g, "").trim()).filter(n => n.length > 2);
-                        cleanNames.forEach(name => {
-                            if (!historyData.some(h => h.name === name && h.date === currentDate && h.part === contentText)) {
-                                historyData.unshift({ name, part: contentText, date: currentDate });
-                                addedCount++;
-                            }
-                        });
-                    }
-                }
-            });
-
-            if(addedCount > 0) {
-                alert(`🎉 Sucesso! ${addedCount} designações foram adicionadas ao seu histórico.`);
-                renderHistoryList();
-                saveAllData();
-            } else {
-                alert("Nenhum nome novo ou data diferente foi detectada para atualizar.");
-            }
-        }
-
-        function addManualHistoryRecord() {
-            const nameInput = document.getElementById('manual-hist-name');
-            const partInput = document.getElementById('manual-hist-part');
-            const currentDate = document.getElementById('field-date').innerText || "Sem Data";
-
-            if(!nameInput.value.trim() || !partInput.value.trim()) {
-                alert("Preencha o nome e a parte para adicionar manualmente.");
-                return;
-            }
-
-            historyData.unshift({
-                name: nameInput.value.trim(),
-                part: partInput.value.trim(),
-                date: currentDate
-            });
-
-            nameInput.value = '';
-            partInput.value = '';
-            renderHistoryList();
-            saveAllData();
-        }
-
-        function removeHistoryRecord(index) {
-            if(confirm("Remover este registro do histórico?")) {
-                historyData.splice(index, 1);
-                renderHistoryList();
-                saveAllData();
-            }
-        }
-
-        function renderHistoryList(filterText = "") {
-            const container = document.getElementById('history-display-container');
-            if(!container) return;
-            container.innerHTML = "";
-
-            const filtered = historyData.filter(item => {
-                const searchStr = (item.name + " " + item.part + " " + item.date).toLowerCase();
-                return searchStr.includes(filterText.toLowerCase());
-            });
-
-            if(filtered.length === 0) {
-                container.innerHTML = "<div style='padding:15px; text-align:center; color:#64748b; font-size:12px;'>Nenhum registro encontrado no histórico.</div>";
-                return;
-            }
-
-            filtered.forEach((item, index) => {
-                const rawIndex = historyData.indexOf(item);
-                const itemDiv = document.createElement('div');
-                itemDiv.className = "history-item";
-                itemDiv.innerHTML = `
-                    <div>
-                        <div class="history-name">${item.name}</div>
-                        <div class="history-meta">${item.part} — 📅 ${item.date}</div>
-                    </div>
-                    <button class="btn-history-del" onclick="removeHistoryRecord(${rawIndex})">❌</button>
-                `;
-                container.appendChild(itemDiv);
-            });
-        }
-
-        function filterHistoryList() {
-            const val = document.getElementById('history-search-input').value;
-            renderHistoryList(val);
-        }
-
-        // --- SALVAMENTO LOCAL STORAGE ---
-        function saveAllData() {
-            if (isLoading) return; 
-
+    function importData(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
             try {
-                const fixedFields = {};
-                document.querySelectorAll('.local-save').forEach(field => {
-                    fixedFields[field.id] = field.innerHTML;
-                });
-                localStorage.setItem('leandro-fixed-fields', JSON.stringify(fixedFields));
-
-                const structuralData = {};
-                ['inicio', 'tesouros', 'ministerio', 'vida', 'fimdesemana'].forEach(sec => {
-                    structuralData[sec] = [];
-                    document.querySelectorAll(`#rows-container-${sec} .structural-row`).forEach(row => {
-                        const cells = row.querySelectorAll('.cell');
-                        if(cells.length >= 3) {
-                            structuralData[sec].push({
-                                time: cells[0].innerHTML,
-                                content: cells[1].innerHTML,
-                                assigned: cells[2].innerHTML,
-                                isCantico: row.classList.contains('bg-cantico')
-                            });
-                        }
-                    });
-                });
-                localStorage.setItem('leandro-structural-rows', JSON.stringify(structuralData));
-
-                const confirmData = [];
-                document.querySelectorAll('.dynamic-confirm-row').forEach(row => {
-                    const cells = row.querySelectorAll('.cell');
-                    if(cells.length >= 2) {
-                        const cb = row.querySelector('.checkbox-confirm');
-                        confirmData.push({
-                            name: cells[0].innerHTML,
-                            part: cells[1].innerHTML,
-                            checked: cb ? cb.checked : false
-                        });
+                const data = JSON.parse(e.target.result);
+                if(data.targetHTML) {
+                    document.getElementById('capture-target').innerHTML = data.targetHTML;
+                    if(data.currentFont) {
+                        document.documentElement.style.setProperty('--app-font', data.currentFont);
+                        const matchIndex = availableFonts.indexOf(data.currentFont);
+                        if(matchIndex !== -1) currentFontIndex = matchIndex;
                     }
-                });
-                localStorage.setItem('leandro-confirm-data', JSON.stringify(confirmData));
-
-                const eventosData = [];
-                document.querySelectorAll('.dynamic-event-row').forEach(row => {
-                    const cells = row.querySelectorAll('.cell');
-                    if(cells.length >= 2) {
-                        eventosData.push({
-                            date: cells[0].innerHTML,
-                            eventDesc: cells[1].innerHTML
-                        });
-                    }
-                });
-                localStorage.setItem('leandro-eventos-data', JSON.stringify(eventosData));
-
-                const notesData = [];
-                document.querySelectorAll('.dynamic-note-row').forEach(note => {
-                    const editable = note.querySelector('.note-editable');
-                    if(editable) notesData.push(editable.innerHTML);
-                });
-                localStorage.setItem('leandro-notes-data', JSON.stringify(notesData));
-
-                localStorage.setItem('leandro-history-records', JSON.stringify(historyData));
-                localStorage.setItem('leandro-lock-states', JSON.stringify(lockStates));
-            } catch (e) {
-                console.error("Erro ao salvar dados localmente", e);
-            }
-        }
-
-        function loadAllData() {
-            isLoading = true; 
-
-            try {
-                const savedTheme = localStorage.getItem('leandro-app-theme');
-                if (savedTheme) applyTheme(savedTheme);
-
-                const savedPaper = localStorage.getItem('leandro-app-paper');
-                if (savedPaper) {
-                    currentPaperIndex = papers.indexOf(savedPaper);
-                    applyPaperColor(savedPaper);
-                }
-
-                const savedFontIdx = localStorage.getItem('leandro-app-font-idx');
-                if (savedFontIdx !== null) {
-                    currentFontIndex = parseInt(savedFontIdx, 10);
-                    applyFont(fonts[currentFontIndex]);
-                }
-
-                const savedFixed = localStorage.getItem('leandro-fixed-fields');
-                if (savedFixed) {
-                    const fixedFields = JSON.parse(savedFixed);
-                    Object.keys(fixedFields).forEach(id => {
-                        const el = document.getElementById(id);
-                        if (el) el.innerHTML = fixedFields[id];
+                    document.querySelectorAll('.table-row').forEach(row => {
+                        setupRowInteraction(row);
                     });
                 }
-            } catch(e) { console.error(e); }
-
-            try {
-                const savedLocks = localStorage.getItem('leandro-lock-states');
-                if (savedLocks) lockStates = JSON.parse(savedLocks);
-            } catch(e) { console.error(e); }
-
-            try {
-                const savedStructural = localStorage.getItem('leandro-structural-rows');
-                if (savedStructural) {
-                    const structuralData = JSON.parse(savedStructural);
-                    Object.keys(structuralData).forEach(sec => {
-                        if(structuralData[sec]) {
-                            structuralData[sec].forEach(r => addGenericRow(sec, r.time, r.content, r.assigned, r.isCantico));
-                        }
-                    });
-                } else {
-                    // Preenchimento Meio de semana padrão
-                    addGenericRow('inicio', 'Horário', 'ISAÍAS 65-66', '<span class="bold">Presidente:</span><br>José Leandro Rocha');
-                    addGenericRow('inicio', '19:30', 'Cântico: 24 - Venham para o monte de Jeová!', '<span class="bold">Oração:</span><br>Everton Santos', true);
-                    addGenericRow('inicio', '19:35', 'Comentários iniciais', '');
-
-                    addGenericRow('tesouros', '19:36', '1. Nós amamos nosso paraíso espiritual! (10 min.)', 'Rogério Bueno');
-                    addGenericRow('tesouros', '19:46', '2. Joias espirituais ISAÍAS 65-66 (10 min.)', 'Felipe Simão');
-                    addGenericRow('tesouros', '19:56', '3. Leitura da Bíblia (4 min) Isa. 65:17-25 (th lição 10)', 'Nelson Bálico');
-
-                    addGenericRow('ministerio', '20:01', '4. Iniciando conversas (3 min) TESTEMUNHO INFORMAL.', 'Marisa Jensen &<br>Maria Bueno');
-                    addGenericRow('ministerio', '20:05', '5. Iniciando conversas (2 min) TESTEMUNHO PÚBLICO.', 'Francineuma Oliveira &<br>Aline Morais');
-                    addGenericRow('ministerio', '20:08', '6. Iniciando conversas (3 min) DE CASA EM CASA.', 'Joana Geraldo Tavares &<br>Thaís Martins');
-                    addGenericRow('ministerio', '20:12', '7. Explicando suas crenças (3 min) Demonstração.', 'Sofia Caruso &<br>Joselene Tavarez');
-
-                    addGenericRow('vida', '20:17', 'Cântico: 80 - "Provem e vejam que Jeová é bom"', '', true);
-                    addGenericRow('vida', '20:21', '8. Será que você vai perder alguma coisa? (15 min.)', 'Paulo Bernardes');
-                    addGenericRow('vida', '20:36', '9. Estudo Bíblico de Congregação (30 min) lfb histórias 88-89', '<strong>Dirigente:</strong> Rodolfo Guiral<br><strong>Leitor:</strong> Marcelo Bueno');
-                    addGenericRow('vida', '21:06', '<p>Comentários finais / Anúncios</p>', '');
-                    addGenericRow('vida', '21:10', 'Cântico: 55 - Nada temam, meus amados!', '<span class="bold">Oração:</span><br>Adriano Bueno', true);
-
-                    // Preenchimento Fim de semana padrão extraído estritamente da sua imagem
-                    addGenericRow('fimdesemana', 'Discurso público', 'Como os ensinos de Jesus podem ajudar você?', '<strong>Orador público:</strong> Eduardo Vreck (Leste de Paulínia)<br><strong>Ausente:</strong> Felipe Simão (Leste de Paulínia)');
-                    addGenericRow('fimdesemana', 'Presidente', 'Everton Santos', '<strong>Oração final:</strong> Leandro Rocha');
-                    addGenericRow('fimdesemana', 'Leitor de A Sentinela', 'Felipe Simão', '');
-                    addGenericRow('fimdesemana', 'Indicador', 'Sivaldo Rocha & Rodolfo Guiral', '');
-                    addGenericRow('fimdesemana', 'Microfone', 'Salmo Daniel & Marcelo Conceição', '');
-                    addGenericRow('fimdesemana', 'Limpeza pós-reunião', 'Anchieta', '');
-                }
-            } catch(e) { console.error(e); }
-
-            try {
-                const savedConfirms = localStorage.getItem('leandro-confirm-data');
-                if (savedConfirms) {
-                    JSON.parse(savedConfirms).forEach(item => addConfirmationRow(item.name, item.part, item.checked));
-                } else {
-                    addConfirmationRow("Rogério Bueno", "1. Tesouros", true);
-                    addConfirmationRow("Felipe Simão", "2. Joias", true);
-                }
-            } catch(e) { console.error(e); }
-
-            try {
-                const savedEventos = localStorage.getItem('leandro-eventos-data');
-                if (savedEventos) {
-                    JSON.parse(savedEventos).forEach(item => addEventRow(item.date, item.eventDesc));
-                } else {
-                    addEventRow("14/06", "Visita do Superintendente de Circuito");
-                    addEventRow("25/07", "Assembleia de Circuito");
-                }
-            } catch(e) { console.error(e); }
-
-            try {
-                const savedNotes = localStorage.getItem('leandro-notes-data');
-                if (savedNotes) {
-                    JSON.parse(savedNotes).forEach(text => addNewNote(text));
-                } else {
-                    addNewNote("Clique aqui para escrever seu primeiro lembrete...");
-                }
-            } catch(e) { console.error(e); }
-
-            try {
-                const savedHistory = localStorage.getItem('leandro-history-records');
-                if (savedHistory) {
-                    historyData = JSON.parse(savedHistory);
-                } else {
-                    historyData = [
-                        { name: "Rogério Bueno", part: "1. Nós amamos nosso paraíso espiritual!", date: "21/05/2026" },
-                        { name: "Felipe Simão", part: "2. Joias espirituais", date: "21/05/2026" }
-                    ];
-                }
-            } catch(e) { console.error(e); }
-            
-            renderHistoryList();
-
-            Object.keys(lockStates).forEach(key => {
-                const btn = document.getElementById(`lock-btn-${key}`);
-                if(btn) {
-                    if (lockStates[key]) {
-                        btn.classList.add('locked');
-                        btn.innerText = "🔒 Trancado";
-                        setFieldsEditable(key, false);
-                    } else {
-                        btn.classList.remove('locked');
-                        btn.innerText = "🔓 Aberto";
-                        setFieldsEditable(key, true);
-                    }
-                }
-            });
-
-            isLoading = false; 
-        }
-
-        document.addEventListener('input', function(e) {
-            saveAllData();
-        });
-        document.addEventListener('blur', function(e) {
-            if (e.target.hasAttribute('contenteditable')) {
-                saveAllData();
+                alert('Backup completo restaurado com sucesso!');
+            } catch (err) {
+                alert('Erro ao processar o arquivo de backup.');
             }
-        }, true);
-
-        window.onload = loadAllData;
-
-        function setFieldsEditable(sectionKey, canEdit) {
-            const fields = document.querySelectorAll('.editable-field-' + sectionKey);
-            fields.forEach(field => field.setAttribute('contenteditable', canEdit ? 'true' : 'false'));
-            
-            let targetContainer;
-            if(sectionKey === 'confirmacoes') targetContainer = document.getElementById('confirm-rows-container');
-            else if(sectionKey === 'eventos') targetContainer = document.getElementById('eventos-rows-container');
-            else if(sectionKey === 'notas') targetContainer = document.getElementById('notes-container');
-            else targetContainer = document.getElementById(`rows-container-${sectionKey}`);
-
-            if(sectionKey === 'inicio') {
-                document.getElementById('field-main-title').setAttribute('contenteditable', canEdit ? 'true' : 'false');
-                document.getElementById('field-location').setAttribute('contenteditable', canEdit ? 'true' : 'false');
-                document.getElementById('field-date').setAttribute('contenteditable', canEdit ? 'true' : 'false');
-            }
-
-            if(targetContainer) {
-                targetContainer.querySelectorAll('.row-controls').forEach(c => c.style.display = canEdit ? 'flex' : 'none');
-                targetContainer.querySelectorAll('.btn-delete-note').forEach(b => b.style.display = canEdit ? 'block' : 'none');
-            }
-        }
-
-        function toggleSectionLock(sectionKey, btnElement) {
-            const isCurrentlyLocked = btnElement.classList.contains('locked');
-            
-            if (!isCurrentlyLocked) {
-                setFieldsEditable(sectionKey, false);
-                btnElement.innerText = "🔒 Trancado";
-                btnElement.classList.add('locked');
-                lockStates[sectionKey] = true;
-            } else {
-                setFieldsEditable(sectionKey, true);
-                btnElement.innerText = "🔓 Aberto";
-                btnElement.classList.remove('locked');
-                lockStates[sectionKey] = false;
-            }
-            saveAllData();
-        }
-
-        function switchTab(event, sectionId) {
-            const buttons = document.querySelectorAll('.tab-button');
-            buttons.forEach(btn => btn.classList.remove('active'));
-            
-            event.currentTarget.classList.add('active');
-            const contents = document.querySelectorAll('.tab-content');
-
-            if (sectionId === 'all') {
-                contents.forEach(content => content.classList.add('active-content'));
-                document.getElementById('section-confirmacoes').classList.remove('active-content');
-                document.getElementById('section-eventos').classList.remove('active-content');
-                document.getElementById('section-notas').classList.remove('active-content');
-                document.getElementById('section-historico').classList.remove('active-content');
-            } else {
-                contents.forEach(content => content.classList.remove('active-content'));
-                document.getElementById('section-' + sectionId).classList.add('active-content');
-            }
-        }
-    </script>
+        };
+        reader.readAsText(file);
+    }
+</script>
 </body>
 </html>
