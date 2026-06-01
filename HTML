@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Esboço do Presidente - Leandro Rocha</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;600;700&family=Open+Sans:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary-bg: #fffdeb; 
+            --text-color: #1a1a1a;
+            --text-secondary: #5f6368;
+            --border-color: #000000;
+            --header-bg-1: #386a7a; 
+            --header-bg-2: #b58105; 
+            --header-bg-3: #941c1c; 
+            --cantico-bg: #fef9c3; 
+            --accent-color: #1a73e8;
+            --body-bg: #f8fafc;
+            --app-font: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        [data-theme="clear-blue"] {
+            --primary-bg: #fffdeb;
+            --header-bg-1: #4a7a96;
+            --header-bg-2: #cca025;
+            --header-bg-3: #b84444;
+            --accent-color: #3b82f6;
+            --body-bg: #f0f4f8;
+            --cantico-bg: #f4f7fe;
+        }
+
+        [data-theme="clear-green"] {
+            --primary-bg: #fffdeb;
+            --header-bg-1: #2e7d32;
+            --header-bg-2: #efa00b;
+            --header-bg-3: #c62828;
+            --accent-color: #10b981;
+            --body-bg: #f1f8f5;
+            --cantico-bg: #f0fdf4;
+        }
+
+        [data-paper="soft-blue"] {
+            --primary-bg: #f0f7ff;
+            --cantico-bg: #e0efff;
+        }
+
+        [data-paper="modern-gray"] {
+            --primary-bg: #f8fafc;
+            --cantico-bg: #f1f5f9;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: var(--app-font);
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--body-bg);
+            color: var(--text-color);
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        #developer-tag {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: #f8fafc;
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            padding: 12px;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            border-radius: 14px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #control-panel {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            padding: 12px;
+            border-radius: 14px;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+            margin-bottom: 12px;
+            width: 100%;
+            max-width: 450px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .panel-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        .btn-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+            width: 100%;
+        }
+
+        button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            font-size: 11px;
+            text-align: center;
+            width: 100%;
+        }
+
+        .btn-theme-toggle {
+            background: #e2e8f0;
+            color: #1e293b;
+            border: 1px solid #cbd5e1;
+        }
+
+        .btn-backup {
+            background-color: #0f172a;
+            color: #ffffff;
+            border: 1px solid #1e293b;
+        }
+
+        .banner-controls {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .section-lock-btn {
+            background: rgba(255, 255, 255, 0.25);
+            color: white;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            width: auto;
+        }
+        .section-lock-btn.locked {
+            background: rgba(0, 0, 0, 0.6);
+            color: #f87171;
+        }
+
+        .section-bold-btn {
+            background: rgba(255, 255, 255, 0.25);
+            color: white;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            width: auto;
+        }
+        .section-bold-btn.active-bold {
+            background: rgba(0, 0, 0, 0.6) !important;
+            color: #fef08a !important;
+        }
+
+        .tabs-container {
+            width: 100%;
+            max-width: 450px;
+            display: flex;
+            background: #ffffff;
+            border-radius: 14px 14px 0 0;
+            padding: 6px 6px 0 6px;
+            gap: 2px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.01);
+            border-bottom: 1px solid #e2e8f0;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .tabs-container::-webkit-scrollbar { display: none; }
+
+        .tab-button {
+            padding: 10px 12px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 11px;
+            border-radius: 10px 10px 0 0;
+            cursor: pointer;
+        }
+
+        .tab-button.active {
+            color: var(--accent-color);
+            background: #eff6ff;
+            font-weight: 700;
+        }
+
+        .document-container {
+            background: var(--primary-bg);
+            width: 100%;
+            max-width: 450px;
+            padding: 20px 14px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+            border-radius: 0 0 14px 14px;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        .refined-header {
+            text-align: center;
+            padding-bottom: 16px;
+            margin-bottom: 15px;
+            border-bottom: 3px double #000000;
+        }
+
+        .refined-header h1 {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            text-transform: uppercase;
+            color: #111827;
+            margin-bottom: 4px;
+            outline: none;
+        }
+
+        .refined-header .meta-info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+            color: #374151;
+            font-weight: 600;
+        }
+
+        .refined-header .location-badge {
+            background: rgba(0, 0, 0, 0.05);
+            padding: 2px 10px;
+            border-radius: 12px;
+            outline: none;
+        }
+
+        .refined-header .date-badge {
+            color: #dc2626;
+            font-weight: 700;
+            outline: none;
+        }
+
+        .table-row {
+            display: flex;
+            border: 1px solid #000000;
+            margin-top: -1px; 
+            height: auto; 
+            min-height: 38px;
+            width: 100%;
+            position: relative;
+            background-color: var(--primary-bg);
+        }
+
+        .cell {
+            padding: 8px;
+            font-size: 12px;
+            line-height: 1.4;
+            outline: none;
+            display: flex;
+            align-items: center;
+            box-sizing: border-box;
+            height: auto; 
+            word-wrap: break-word; 
+            overflow-wrap: break-word;
+        }
+
+        .col-content {
+            width: 53%;
+            border-right: 1px solid #000000;
+            flex-grow: 1; 
+            display: block; 
+            font-weight: 400;
+        }
+        
+        /* Modificado para injetar peso direto no container editável */
+        .text-bold-active, .text-bold-active * {
+            font-weight: 700 !important;
+        }
+
+        [contenteditable="true"]:focus {
+            background-color: #fef08a !important;
+        }
+
+        .col-time {
+            width: 15%;
+            max-width: 55px;
+            border-right: 1px solid #000000;
+            justify-content: center;
+            font-weight: 600;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .col-assigned {
+            width: 32%;
+            min-width: 115px;
+            flex-shrink: 0;
+            display: block;
+        }
+        
+        .row-controls {
+            position: absolute;
+            right: -75px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex; 
+            gap: 2px;
+            background: rgba(241, 245, 249, 0.9);
+            padding: 4px;
+            border-radius: 6px;
+            border: 1px solid #cbd5e1;
+            z-index: 10;
+        }
+        
+        .btn-row-action {
+            padding: 3px 6px;
+            font-size: 10px;
+            border-radius: 4px;
+            background: #fff;
+            border: 1px solid #cbd5e1;
+            cursor: pointer;
+            flex-grow: 0;
+            width: auto;
+        }
+        .btn-row-action:hover { background: #f1f5f9; }
+        .btn-row-del { color: #dc2626; border-color: #fca5a5; }
+
+        .section-inline-add {
+            text-align: right;
+            margin-top: 4px;
+            margin-bottom: 12px;
+        }
+        .btn-inline-add-spec {
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px dashed #cbd5e1;
+            padding: 4px 10px;
+            font-size: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            display: inline-block;
+            width: auto;
+        }
+
+        .note-block {
+            background: #fef08a; 
+            border-left: 4px solid #dfa511;
+            padding: 10px;
+            margin-top: 8px;
+            border-radius: 4px;
+            position: relative;
+        }
+        .note-editable {
+            font-size: 13px;
+            outline: none;
+            min-height: 40px;
+            line-height: 1.4;
+            word-wrap: break-word;
+        }
+        .btn-delete-note {
+            background: transparent;
+            color: #ef4444;
+            font-size: 10px;
+            font-weight: bold;
+            border: none;
+            text-align: right;
+            display: block; 
+            margin-top: 4px;
+            cursor: pointer;
+            width: auto;
+            float: right;
+        }
+
+        .section-banner {
+            color: white;
+            font-weight: 700;
+            padding: 6px 10px;
+            font-size: 11px;
+            margin-top: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .bg-tesouros { background-color: var(--header-bg-1); }
+        .bg-ministerio { background-color: var(--header-bg-2); }
+        .bg-vida { background-color: var(--header-bg-3); }
+        .bg-cantico { background-color: var(--cantico-bg) !important; }
+
+        .tab-content { display: none; }
+        .tab-content.active-content { display: block; }
+
+        .text-format-toolbar {
+            position: absolute;
+            background: #1e293b;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 8px;
+            display: flex;
+            gap: 6px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            z-index: 1000;
+            pointer-events: auto;
+        }
+        .text-format-toolbar button {
+            background: transparent;
+            color: white;
+            border: none;
+            padding: 2px 8px;
+            font-size: 11px;
+            cursor: pointer;
+            width: auto;
+            border-radius: 4px;
+        }
+        .text-format-toolbar button:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            #developer-tag, #control-panel, .tabs-container, .section-lock-btn, .section-bold-btn, .btn-delete-note, .row-controls, .section-inline-add, .text-format-toolbar { display: none !important; }
+            .tab-content { display: block !important; }
+            .document-container { box-shadow: none; padding: 0; width: 100%; max-width: 100%; border-radius: 0; }
+        }
+    </style>
+</head>
+<body>
+<div id="developer-tag">
+    <span>✨ Programado por Leandro Rocha ✨</span>
+</div>
+
+<div id="control-panel">
+    <div class="panel-title">PAINEL DE CONFIGURAÇÃO E AJUSTES</div>
+    <div class="btn-group">
+        <button class="btn-theme-toggle" onclick="toggleTheme()">🎨 Alternar Tema</button>
+        <button class="btn-theme-toggle" onclick="togglePaperStyle()">📄 Tipo de Papel</button>
+        <button class="btn-theme-toggle" onclick="changeFont()">🔤 Mudar Fonte</button>
+        <button class="btn-backup" onclick="exportData()">💾 Criar Backup</button>
+        <button class="btn-theme-toggle" onclick="triggerImport()">📂 Abrir Backup</button>
+    </div>
+    <input type="file" id="import-file" style="display: none;" onchange="importData(event)" accept=".json">
+</div>
+
+<div class="tabs-container">
+    <button class="tab-button active" onclick="switchTab('reuniao-meio')">Meio de Semana</button>
+    <button class="tab-button" onclick="switchTab('reuniao-fim')">Fim de Semana</button>
+    <button class="tab-button" onclick="switchTab('tab-campo')">Serviço de Campo</button>
+    <button class="tab-button" onclick="switchTab('tab-confirmacoes')">Confirmações</button>
+    <button class="tab-button" onclick="switchTab('tab-eventos')">Eventos</button>
+    <button class="tab-button" onclick="switchTab('tab-limpeza')">Limpeza</button>
+</div>
+
+<div class="document-container" id="capture-target" oninput="saveToLocalStorage()">
+    
+    <div id="reuniao-meio" class="tab-content active-content">
+        <div class="refined-header">
+            <h1 contenteditable="false" id="title-meio">NOSSA VIDA E MINISTÉRIO CRISTÃO</h1>
+            <div class="meta-info">
+                <span class="location-badge" contenteditable="false" id="loc-meio">Salão do Reino</span>
+                <span class="date-badge" contenteditable="false" id="date-meio">01/06/2026</span>
+            </div>
+        </div>
+
+        <div class="section-banner bg-tesouros">
+            <span>PRESIDENTE</span>
+            <div class="banner-controls">
+                <button class="section-lock-btn locked" onclick="toggleLockSection(this)">🔒 Trancado</button>
+                <button class="section-bold-btn active-bold" onclick="toggleBoldSection(this)">Negrito</button>
+            </div>
+        </div>
+        <div id="container-meio-inicio" data-section-locked="true">
+            <div class="table-row bg-cantico" data-row-id="mi1">
+                <div class="cell col-time" contenteditable="false">19:00</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Cântico Inicial e Oração</div>
+                <div class="cell col-assigned" contenteditable="false">Presidente</div>
+            </div>
+            <div class="table-row bg-cantico" data-row-id="mi2">
+                <div class="cell col-time" contenteditable="false">19:05</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Comentários Iniciais</div>
+                <div class="cell col-assigned" contenteditable="false">Presidente</div>
+            </div>
+        </div>
+        <div class="section-inline-add">
+            <span class="btn-inline-add-spec" onclick="addRowSpec('container-meio-inicio', true)">+ Adicionar Linha</span>
+            <span class="btn-inline-add-spec" onclick="addNoteSpec('container-meio-inicio')">+ Adicionar Nota</span>
+        </div>
+
+        <div class="section-banner bg-tesouros">
+            <span>TESOUROS DA PALAVRA DE DEUS</span>
+            <div class="banner-controls">
+                <button class="section-lock-btn locked" onclick="toggleLockSection(this)">🔒 Trancado</button>
+                <button class="section-bold-btn active-bold" onclick="toggleBoldSection(this)">Negrito</button>
+            </div>
+        </div>
+        <div id="container-tesouros" data-section-locked="true">
+            <div class="table-row" data-row-id="t1">
+                <div class="cell col-time" contenteditable="false">19:10</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Discurso (10 min.)</div>
+                <div class="cell col-assigned" contenteditable="false"></div>
+            </div>
+            <div class="table-row" data-row-id="t2">
+                <div class="cell col-time" contenteditable="false">19:20</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Joias Espirituais (10 min.)</div>
+                <div class="cell col-assigned" contenteditable="false"></div>
+            </div>
+            <div class="table-row" data-row-id="t3">
+                <div class="cell col-time" contenteditable="false">19:30</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Leitura da Bíblia (4 min.)</div>
+                <div class="cell col-assigned" contenteditable="false">Estudante</div>
+            </div>
+        </div>
+        <div class="section-inline-add">
+            <span class="btn-inline-add-spec" onclick="addRowSpec('container-tesouros')">+ Adicionar Linha</span>
+            <span class="btn-inline-add-spec" onclick="addNoteSpec('container-tesouros')">+ Adicionar Nota</span>
+        </div>
+
+        <div class="section-banner bg-ministerio">
+            <span>FAÇA SEU MELHOR NO MINISTÉRIO</span>
+            <div class="banner-controls">
+                <button class="section-lock-btn locked" onclick="toggleLockSection(this)">🔒 Trancado</button>
+                <button class="section-bold-btn active-bold" onclick="toggleBoldSection(this)">Negrito</button>
+            </div>
+        </div>
+        <div id="container-ministerio" data-section-locked="true">
+            <div class="table-row" data-row-id="m1">
+                <div class="cell col-time" contenteditable="false">19:35</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Iniciando Conversas (3 min.)</div>
+                <div class="cell col-assigned" contenteditable="false"></div>
+            </div>
+            <div class="table-row" data-row-id="m2">
+                <div class="cell col-time" contenteditable="false">19:39</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Cultivando o Interesse (4 min.)</div>
+                <div class="cell col-assigned" contenteditable="false"></div>
+            </div>
+            <div class="table-row" data-row-id="m3">
+                <div class="cell col-time" contenteditable="false">19:44</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Fazendo Discípulos (5 min.)</div>
+                <div class="cell col-assigned" contenteditable="false"></div>
+            </div>
+        </div>
+        <div class="section-inline-add">
+            <span class="btn-inline-add-spec" onclick="addRowSpec('container-ministerio')">+ Adicionar Linha</span>
+            <span class="btn-inline-add-spec" onclick="addNoteSpec('container-ministerio')">+ Adicionar Nota</span>
+        </div>
+
+        <div class="section-banner bg-vida">
+            <span>NOSSA VIDA CRISTÃ</span>
+            <div class="banner-controls">
+                <button class="section-lock-btn locked" onclick="toggleLockSection(this)">🔒 Trancado</button>
+                <button class="section-bold-btn active-bold" onclick="toggleBoldSection(this)">Negrito</button>
+            </div>
+        </div>
+        <div id="container-vida" data-section-locked="true">
+            <div class="table-row bg-cantico" data-row-id="v1">
+                <div class="cell col-time" contenteditable="false">19:50</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Cântico Intermediário</div>
+                <div class="cell col-assigned" contenteditable="false"></div>
+            </div>
+            <div class="table-row" data-row-id="v2">
+                <div class="cell col-time" contenteditable="false">19:55</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Parte 1 (15 min.)</div>
+                <div class="cell col-assigned" contenteditable="false"></div>
+            </div>
+            <div class="table-row" data-row-id="v3">
+                <div class="cell col-time" contenteditable="false">20:10</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Estudo Bíblico de Congregação (30 min.)</div>
+                <div class="cell col-assigned" contenteditable="false"></div>
+            </div>
+            <div class="table-row bg-cantico" data-row-id="v4">
+                <div class="cell col-time" contenteditable="false">20:40</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Comentários Finais</div>
+                <div class="cell col-assigned" contenteditable="false">Presidente</div>
+            </div>
+            <div class="table-row bg-cantico" data-row-id="v5">
+                <div class="cell col-time" contenteditable="false">20:45</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Cântico Final e Oração</div>
+                <div class="cell col-assigned" contenteditable="false"></div>
+            </div>
+        </div>
+        <div class="section-inline-add">
+            <span class="btn-inline-add-spec" onclick="addRowSpec('container-vida', true)">+ Adicionar Linha</span>
+            <span class="btn-inline-add-spec" onclick="addNoteSpec('container-vida')">+ Adicionar Nota</span>
+        </div>
+    </div>
+
+    <div id="reuniao-fim" class="tab-content">
+        <div class="refined-header">
+            <h1 contenteditable="false" id="title-fim">REUNIÃO PÚBLICA E ESTUDO DE A SENTINELA</h1>
+            <div class="meta-info">
+                <span class="location-badge" contenteditable="false" id="loc-fim">Salão do Reino</span>
+                <span class="date-badge" contenteditable="false" id="date-fim">07/06/2026</span>
+            </div>
+        </div>
+
+        <div class="section-banner bg-tesouros">
+            <span>PRESIDENTE</span>
+            <div class="banner-controls">
+                <button class="section-lock-btn locked" onclick="toggleLockSection(this)">🔒 Trancado</button>
+                <button class="section-bold-btn active-bold" onclick="toggleBoldSection(this)">Negrito</button>
+            </div>
+        </div>
+        <div id="container-fim-inicio" data-section-locked="true">
+            <div class="table-row bg-cantico" data-row-id="fi1">
+                <div class="cell col-time" contenteditable="false">09:00</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Cântico Inicial e Oração</div>
+                <div class="cell col-assigned" contenteditable="false">Presidente</div>
+            </div>
+        </div>
+        <div class="section-inline-add">
+            <span class="btn-inline-add-spec" onclick="addRowSpec('container-fim-inicio', true)">+ Adicionar Linha</span>
+            <span class="btn-inline-add-spec" onclick="addNoteSpec('container-fim-inicio')">+ Adicionar Nota</span>
+        </div>
+
+        <div class="section-banner bg-tesouros">
+            <span>DISCURSO PÚBLICO</span>
+            <div class="banner-controls">
+                <button class="section-lock-btn locked" onclick="toggleLockSection(this)">🔒 Trancado</button>
+                <button class="section-bold-btn active-bold" onclick="toggleBoldSection(this)">Negrito</button>
+            </div>
+        </div>
+        <div id="container-discurso" data-section-locked="true">
+            <div class="table-row" data-row-id="f1">
+                <div class="cell col-time" contenteditable="false">09:05</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Tema do Discurso Público:</div>
+                <div class="cell col-assigned" contenteditable="false">Orador:</div>
+            </div>
+        </div>
+        <div class="section-inline-add">
+            <span class="btn-inline-add-spec" onclick="addRowSpec('container-discurso')">+ Adicionar Linha</span>
+            <span class="btn-inline-add-spec" onclick="addNoteSpec('container-discurso')">+ Adicionar Nota</span>
+        </div>
+
+        <div class="section-banner bg-ministerio">
+            <span>ESTUDO DE A SENTINELA</span>
+            <div class="banner-controls">
+                <button class="section-lock-btn locked" onclick="toggleLockSection(this)">🔒 Trancado</button>
+                <button class="section-bold-btn active-bold" onclick="toggleBoldSection(this)">Negrito</button>
+            </div>
+        </div>
+        <div id="container-sentinela" data-section-locked="true">
+            <div class="table-row" data-row-id="f2">
+                <div class="cell col-time" contenteditable="false">09:35</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Leitura do Artigo de Estudo</div>
+                <div class="cell col-assigned" contenteditable="false">Dirigente:<br>Leitor:</div>
+            </div>
+            <div class="table-row bg-cantico" data-row-id="f3">
+                <div class="cell col-time" contenteditable="false">10:40</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Cântico Final e Oração</div>
+                <div class="cell col-assigned" contenteditable="false"></div>
+            </div>
+        </div>
+        <div class="section-inline-add">
+            <span class="btn-inline-add-spec" onclick="addRowSpec('container-sentinela', true)">+ Adicionar Linha</span>
+            <span class="btn-inline-add-spec" onclick="addNoteSpec('container-sentinela')">+ Adicionar Nota</span>
+        </div>
+    </div>
+
+    <div id="tab-campo" class="tab-content">
+        <div class="refined-header">
+            <h1 contenteditable="false">ARRANJO DE SERVIÇO DE CAMPO</h1>
+            <div class="meta-info">
+                <span class="location-badge" contenteditable="false">Grupos e Saídas</span>
+            </div>
+        </div>
+        <div class="section-banner bg-tesouros">
+            <span>ESCALA DE DIRIGENTES E PONTOS DE ENCONTRO</span>
+            <div class="banner-controls">
+                <button class="section-lock-btn locked" onclick="toggleLockSection(this)">🔒 Trancado</button>
+                <button class="section-bold-btn active-bold" onclick="toggleBoldSection(this)">Negrito</button>
+            </div>
+        </div>
+        <div id="container-campo" data-section-locked="true">
+            <div class="table-row">
+                <div class="cell col-time" contenteditable="false">Dia</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Ponto de Encontro Central</div>
+                <div class="cell col-assigned" contenteditable="false">Dirigente:</div>
+            </div>
+        </div>
+        <div class="section-inline-add">
+            <span class="btn-inline-add-spec" onclick="addRowSpec('container-campo')">+ Adicionar Linha</span>
+            <span class="btn-inline-add-spec" onclick="addNoteSpec('container-campo')">+ Adicionar Nota</span>
+        </div>
+    </div>
+    <!-- CONTEÚDO: CONFIRMAÇÕES -->
+    <div id="tab-confirmacoes" class="tab-content">
+        <div class="refined-header">
+            <h1 contenteditable="false">CONTROLE DE CONFIRMAÇÕES</h1>
+            <div class="meta-info">
+                <span class="location-badge" contenteditable="false">Status de Designações</span>
+            </div>
+        </div>
+        <div class="section-banner bg-tesouros">
+            <span>VERIFICAÇÃO DE DISPONIBILIDADE</span>
+            <div class="banner-controls">
+                <button class="section-lock-btn locked" onclick="toggleLockSection(this)">🔒 Trancado</button>
+                <button class="section-bold-btn active-bold" onclick="toggleBoldSection(this)">Negrito</button>
+            </div>
+        </div>
+        <div id="container-confirmacoes" data-section-locked="true">
+            <div class="table-row">
+                <div class="cell col-time" contenteditable="false">Meio</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Presidente da Reunião (Confirmar)</div>
+                <div class="cell col-assigned" contenteditable="false">Status: Pendente</div>
+            </div>
+            <div class="table-row">
+                <div class="cell col-time" contenteditable="false">Fim</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Orador Local / Convidado</div>
+                <div class="cell col-assigned" contenteditable="false">Status: Pendente</div>
+            </div>
+        </div>
+        <div class="section-inline-add">
+            <span class="btn-inline-add-spec" onclick="addRowSpec('container-confirmacoes')">+ Adicionar Linha</span>
+            <span class="btn-inline-add-spec" onclick="addNoteSpec('container-confirmacoes')">+ Adicionar Nota</span>
+        </div>
+    </div>
+
+    <!-- CONTEÚDO: EVENTOS -->
+    <div id="tab-eventos" class="tab-content">
+        <div class="refined-header">
+            <h1 contenteditable="false">CRONOGRAMA DE EVENTOS E VISITAS</h1>
+            <div class="meta-info">
+                <span class="location-badge" contenteditable="false">Assembleias, Visitas e Especiais</span>
+            </div>
+        </div>
+        <div class="section-banner bg-ministerio">
+            <span>PROGRAMAÇÃO EXCEPCIONAL</span>
+            <div class="banner-controls">
+                <button class="section-lock-btn locked" onclick="toggleLockSection(this)">🔒 Trancado</button>
+                <button class="section-bold-btn active-bold" onclick="toggleBoldSection(this)">Negrito</button>
+            </div>
+        </div>
+        <div id="container-eventos" data-section-locked="true">
+            <div class="table-row">
+                <div class="cell col-time" contenteditable="false">--:--</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Clique aqui para começar a montar o evento...</div>
+                <div class="cell col-assigned" contenteditable="false">Designado</div>
+            </div>
+        </div>
+        <div class="section-inline-add">
+            <span class="btn-inline-add-spec" onclick="addRowSpec('container-eventos')">+ Adicionar Linha</span>
+            <span class="btn-inline-add-spec" onclick="addNoteSpec('container-eventos')">+ Adicionar Nota</span>
+        </div>
+    </div>
+
+    <!-- CONTEÚDO: LIMPEZA -->
+    <div id="tab-limpeza" class="tab-content">
+        <div class="refined-header">
+            <h1 contenteditable="false">PROGRAMAÇÃO DE LIMPEZA E MANUTENÇÃO</h1>
+            <div class="meta-info">
+                <span class="location-badge" contenteditable="false">Organização dos Grupos</span>
+            </div>
+        </div>
+        <div class="section-banner bg-vida">
+            <span>ESCALA DOS GRUPOS DO SALÃO</span>
+            <div class="banner-controls">
+                <button class="section-lock-btn locked" onclick="toggleLockSection(this)">🔒 Trancado</button>
+                <button class="section-bold-btn active-bold" onclick="toggleBoldSection(this)">Negrito</button>
+            </div>
+        </div>
+        <div id="container-limpeza" data-section-locked="true">
+            <div class="table-row">
+                <div class="cell col-time" contenteditable="false">Grupo</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Indicadores e Varrição (Seção A)</div>
+                <div class="cell col-assigned" contenteditable="false">Dirigente do Grupo</div>
+            </div>
+            <div class="table-row">
+                <div class="cell col-time" contenteditable="false">Grupo</div>
+                <div class="cell col-content text-bold-active" contenteditable="false">Sanitários e Áreas Comuns (Seção B)</div>
+                <div class="cell col-assigned" contenteditable="false">Dirigente do Grupo</div>
+            </div>
+        </div>
+        <div class="section-inline-add">
+            <span class="btn-inline-add-spec" onclick="addRowSpec('container-limpeza')">+ Adicionar Linha</span>
+            <span class="btn-inline-add-spec" onclick="addNoteSpec('container-limpeza')">+ Adicionar Nota</span>
+        </div>
+    </div>
+
+</div> <!-- FIM DO DOCUMENT-CONTAINER -->
+
+<script>
+    const availableFonts = [
+        "'Plus Jakarta Sans', sans-serif",
+        "'Inter', sans-serif",
+        "'Open Sans', sans-serif",
+        "'Roboto', sans-serif"
+    ];
+    let currentFontIndex = 0;
+
+    // SISTEMA DE SALVAMENTO AUTOMÁTICO (LOCAL STORAGE)
+    function saveToLocalStorage() {
+        const appState = {
+            htmlContent: document.getElementById('capture-target').innerHTML,
+            theme: document.body.getAttribute('data-theme') || '',
+            paper: document.body.getAttribute('data-paper') || '',
+            currentFont: document.documentElement.style.getPropertyValue('--app-font') || availableFonts[0],
+            fontIndex: currentFontIndex
+        };
+        localStorage.setItem('esboço_presidente_data', JSON.stringify(appState));
+    }
+
+    function loadFromLocalStorage() {
+        const savedData = localStorage.getItem('esboço_presidente_data');
+        if (!savedData) {
+            document.querySelectorAll('.table-row').forEach(row => setupRowInteraction(row));
+            return;
+        }
+        try {
+            const state = JSON.parse(savedData);
+            if (state.htmlContent) {
+                document.getElementById('capture-target').innerHTML = state.htmlContent;
+            }
+            if (state.theme) document.body.setAttribute('data-theme', state.theme);
+            else document.body.removeAttribute('data-theme');
+            
+            if (state.paper) document.body.setAttribute('data-paper', state.paper);
+            else document.body.removeAttribute('data-paper');
+            
+            if (state.currentFont) {
+                document.documentElement.style.setProperty('--app-font', state.currentFont);
+                currentFontIndex = state.fontIndex || 0;
+            }
+            
+            // Reatribui eventos aos elementos carregados dinamicamente
+            document.querySelectorAll('.table-row').forEach(row => {
+                setupRowInteraction(row);
+            });
+            attachLiveBoldListeners();
+        } catch (e) {
+            console.error("Erro ao carregar dados salvos automaticamente.", e);
+        }
+    }
+
+    // INTERCEPTADOR PARA FORÇAR NEGRITO AO DIGITAR
+    function attachLiveBoldListeners() {
+        document.querySelectorAll('.col-content').forEach(cell => {
+            cell.removeEventListener('keydown', forceBoldTextEvent);
+            cell.addEventListener('keydown', forceBoldTextEvent);
+        });
+    }
+
+    function forceBoldTextEvent(e) {
+        const cell = e.currentTarget;
+        if (cell.classList.contains('text-bold-active')) {
+            // Se a célula estiver vazia ou com texto padrão puro, força o container do browser a manter negrito nativo
+            if (cell.innerText.trim() === "" || cell.innerHTML === "<br>") {
+                // Pequeno delay para interceptar a criação do nó de texto nativo pelo navegador
+                setTimeout(() => {
+                    document.execCommand('bold', false, null);
+                }, 1);
+            }
+        }
+    }
+
+    function changeFont() {
+        currentFontIndex = (currentFontIndex + 1) % availableFonts.length;
+        document.documentElement.style.setProperty('--app-font', availableFonts[currentFontIndex]);
+        saveToLocalStorage();
+    }
+
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active-content'));
+        
+        const activeBtn = Array.from(document.querySelectorAll('.tab-button')).find(btn => btn.getAttribute('onclick').includes(tabId));
+        if(activeBtn) activeBtn.classList.add('active');
+        
+        const targetContent = document.getElementById(tabId);
+        if(targetContent) targetContent.classList.add('active-content');
+        saveToLocalStorage();
+    }
+
+    function toggleTheme() {
+        const body = document.body;
+        const currentTheme = body.getAttribute('data-theme');
+        if (!currentTheme) body.setAttribute('data-theme', 'clear-blue');
+        else if (currentTheme === 'clear-blue') body.setAttribute('data-theme', 'clear-green');
+        else body.removeAttribute('data-theme');
+        saveToLocalStorage();
+    }
+
+    function togglePaperStyle() {
+        const body = document.body;
+        const currentPaper = body.getAttribute('data-paper');
+        if (!currentPaper) body.setAttribute('data-paper', 'soft-blue');
+        else if (currentPaper === 'soft-blue') body.setAttribute('data-paper', 'modern-gray');
+        else body.removeAttribute('data-paper');
+        saveToLocalStorage();
+    }
+
+    function moveRow(button, direction) {
+        const row = button.closest('.table-row');
+        if (!row) return;
+        const container = row.parentElement;
+        
+        if (direction === 'up') {
+            const previous = row.previousElementSibling;
+            if (previous && previous.classList.contains('table-row')) {
+                container.insertBefore(row, previous);
+            }
+        } else if (direction === 'down') {
+            const next = row.nextElementSibling;
+            if (next && next.classList.contains('table-row')) {
+                container.insertBefore(next, row);
+            }
+        }
+        saveToLocalStorage();
+    }
+
+    function addRowSpec(containerId, isCantico = false) {
+        const container = document.getElementById(containerId);
+        const rowId = 'row-' + Date.now();
+        
+        const banner = container.previousElementSibling;
+        const isLocked = container.getAttribute('data-section-locked') === 'true';
+        const isBold = banner && banner.querySelector('.section-bold-btn') && banner.querySelector('.section-bold-btn').classList.contains('active-bold');
+        
+        const row = document.createElement('div');
+        row.className = isCantico ? 'table-row bg-cantico' : 'table-row';
+        row.setAttribute('data-row-id', rowId);
+        
+        const editableStatus = isLocked ? 'false' : 'true';
+        const boldClass = isBold ? 'text-bold-active' : '';
+        
+        row.innerHTML = `
+            <div class="cell col-time" contenteditable="${editableStatus}">00:00</div>
+            <div class="cell col-content ${boldClass}" contenteditable="${editableStatus}">Nova Linha de Programação</div>
+            <div class="cell col-assigned" contenteditable="${editableStatus}"></div>
+        `;
+        
+        setupRowInteraction(row);
+        container.appendChild(row);
+        attachLiveBoldListeners();
+        saveToLocalStorage();
+    }
+
+    function addNoteSpec(containerId) {
+        const container = document.getElementById(containerId);
+        const noteId = 'note-' + Date.now();
+        
+        const noteBlock = document.createElement('div');
+        noteBlock.className = 'note-block';
+        noteBlock.setAttribute('data-note-id', noteId);
+        
+        noteBlock.innerHTML = `
+            <div class="note-editable" contenteditable="true">Clique para digitar sua observação...</div>
+            <button class="btn-delete-note" onclick="this.parentElement.remove(); saveToLocalStorage();">❌ Excluir Nota</button>
+            <div style="clear:both;"></div>
+        `;
+        
+        container.appendChild(noteBlock);
+        saveToLocalStorage();
+    }
+
+    function setupRowInteraction(row) {
+        row.addEventListener('mouseenter', function() {
+            const container = this.parentElement;
+            if (!container || container.getAttribute('data-section-locked') === 'true') return;
+            if (this.querySelector('.row-controls')) return;
+            
+            const controls = document.createElement('div');
+            controls.className = 'row-controls';
+            
+            const btnUp = document.createElement('button');
+            btnUp.className = 'btn-row-action';
+            btnUp.innerText = '▲';
+            btnUp.onclick = () => moveRow(btnUp, 'up');
+            
+            const btnDown = document.createElement('button');
+            btnDown.className = 'btn-row-action';
+            btnDown.innerText = '▼';
+            btnDown.onclick = () => moveRow(btnDown, 'down');
+            
+            const btnDel = document.createElement('button');
+            btnDel.className = 'btn-row-action btn-row-del';
+            btnDel.innerText = '❌';
+            btnDel.onclick = () => { this.remove(); saveToLocalStorage(); };
+            
+            controls.appendChild(btnUp);
+            controls.appendChild(btnDown);
+            controls.appendChild(btnDel);
+            this.appendChild(controls);
+        });
+        
+        row.addEventListener('mouseleave', function() {
+            const controls = this.querySelector('.row-controls');
+            if (controls) controls.remove();
+        });
+    }
+
+    function toggleLockSection(btn) {
+        const banner = btn.closest('.section-banner');
+        const nextContainer = banner.nextElementSibling;
+        const tabContent = btn.closest('.tab-content');
+        const header = tabContent.querySelector('.refined-header');
+        
+        if (btn.classList.contains('locked')) {
+            btn.classList.remove('locked');
+            btn.innerText = '🔓 Livre';
+            nextContainer.setAttribute('data-section-locked', 'false');
+            
+            if(header) {
+                header.querySelectorAll('h1, .location-badge, .date-badge').forEach(el => el.setAttribute('contenteditable', 'true'));
+            }
+            nextContainer.querySelectorAll('.cell').forEach(cell => {
+                cell.setAttribute('contenteditable', 'true');
+            });
+        } else {
+            btn.classList.add('locked');
+            btn.innerText = '🔒 Trancado';
+            nextContainer.setAttribute('data-section-locked', 'true');
+            nextContainer.querySelectorAll('.row-controls').forEach(ctrl => ctrl.remove());
+            
+            if(header) {
+                header.querySelectorAll('h1, .location-badge, .date-badge').forEach(el => el.setAttribute('contenteditable', 'false'));
+            }
+            nextContainer.querySelectorAll('.cell').forEach(cell => {
+                cell.setAttribute('contenteditable', 'false');
+            });
+        }
+        saveToLocalStorage();
+    }
+
+    function toggleBoldSection(btn) {
+        const banner = btn.closest('.section-banner');
+        const nextContainer = banner.nextElementSibling;
+        
+        if (btn.classList.contains('active-bold')) {
+            btn.classList.remove('active-bold');
+            nextContainer.querySelectorAll('.col-content').forEach(cell => {
+                cell.classList.remove('text-bold-active');
+            });
+        } else {
+            btn.classList.add('active-bold');
+            nextContainer.querySelectorAll('.col-content').forEach(cell => {
+                cell.classList.add('text-bold-active');
+            });
+        }
+        saveToLocalStorage();
+    }
+
+    // MENU FLUTUANTE DE FORMATO SELETIVO
+    let formatToolbar = null;
+
+    function createFormatToolbar() {
+        formatToolbar = document.createElement('div');
+        formatToolbar.className = 'text-format-toolbar';
+        formatToolbar.style.display = 'none';
+
+        const btnBold = document.createElement('button');
+        btnBold.innerText = 'Negrito';
+        btnBold.onmousedown = function(e) {
+            e.preventDefault(); 
+            document.execCommand('bold', false, null);
+            saveToLocalStorage();
+        };
+
+        const btnItalic = document.createElement('button');
+        btnItalic.innerHTML = '<em>Itálico</em>';
+        btnItalic.onmousedown = function(e) {
+            e.preventDefault();
+            document.execCommand('italic', false, null);
+            saveToLocalStorage();
+        };
+
+        formatToolbar.appendChild(btnBold);
+        formatToolbar.appendChild(btnItalic);
+        document.body.appendChild(formatToolbar);
+    }
+
+    function checkTextSelection() {
+        const selection = window.getSelection();
+        if (!selection || selection.isCollapsed || selection.toString().trim() === "") {
+            if (formatToolbar) formatToolbar.style.display = 'none';
+            return;
+        }
+
+        let anchor = selection.anchorNode;
+        if (anchor && anchor.nodeType === 3) anchor = anchor.parentNode;
+        
+        if (anchor && anchor.closest('[contenteditable="true"]')) {
+            const range = selection.getRangeAt(0);
+            const rect = range.getBoundingClientRect();
+            if (formatToolbar) {
+                formatToolbar.style.display = 'flex';
+                formatToolbar.style.left = `${rect.left + window.scrollX + (rect.width / 2) - (formatToolbar.offsetWidth / 2)}px`;
+                formatToolbar.style.top = `${rect.top + window.scrollY - formatToolbar.offsetHeight - 8}px`;
+            }
+        } else {
+            if (formatToolbar) formatToolbar.style.display = 'none';
+        }
+    }
+
+    createFormatToolbar();
+    document.addEventListener('mouseup', checkTextSelection);
+    document.addEventListener('keyup', checkTextSelection);
+
+    // EXPORTAÇÃO MANUAL DE ARQUIVOS JSON
+    function exportData() {
+        const data = {
+            targetHTML: document.getElementById('capture-target').innerHTML,
+            currentFont: document.documentElement.style.getPropertyValue('--app-font')
+        };
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data));
+        const downloadAnchor = document.createElement('a');
+        downloadAnchor.setAttribute("href", dataStr);
+        downloadAnchor.setAttribute("download", "Backup_Geral_Leandro.json");
+        document.body.appendChild(downloadAnchor);
+        downloadAnchor.click();
+        downloadAnchor.remove();
+    }
+
+    function triggerImport() {
+        document.getElementById('import-file').click();
+    }
+
+    function importData(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const data = JSON.parse(e.target.result);
+                if(data.targetHTML) {
+                    document.getElementById('capture-target').innerHTML = data.targetHTML;
+                    if(data.currentFont) {
+                        document.documentElement.style.setProperty('--app-font', data.currentFont);
+                        const matchIndex = availableFonts.indexOf(data.currentFont);
+                        if(matchIndex !== -1) currentFontIndex = matchIndex;
+                    }
+                    document.querySelectorAll('.table-row').forEach(row => setupRowInteraction(row));
+  
