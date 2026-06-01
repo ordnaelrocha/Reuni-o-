@@ -303,7 +303,8 @@
             font-weight: 400;
         }
         
-        .text-bold-active {
+        /* Modificado para injetar peso direto no container editável */
+        .text-bold-active, .text-bold-active * {
             font-weight: 700 !important;
         }
 
@@ -472,7 +473,6 @@
     <input type="file" id="import-file" style="display: none;" onchange="importData(event)" accept=".json">
 </div>
 
-<!-- CONTAINER DE ABAS EXPANDIDO COM SERVIÇO DE CAMPO -->
 <div class="tabs-container">
     <button class="tab-button active" onclick="switchTab('reuniao-meio')">Meio de Semana</button>
     <button class="tab-button" onclick="switchTab('reuniao-fim')">Fim de Semana</button>
@@ -482,10 +482,8 @@
     <button class="tab-button" onclick="switchTab('tab-limpeza')">Limpeza</button>
 </div>
 
-<!-- ÁREA DO DOCUMENTO PRINCIPAL -->
-<div class="document-container" id="capture-target">
+<div class="document-container" id="capture-target" oninput="saveToLocalStorage()">
     
-    <!-- CONTEÚDO: REUNIÃO MEIO DE SEMANA -->
     <div id="reuniao-meio" class="tab-content active-content">
         <div class="refined-header">
             <h1 contenteditable="false" id="title-meio">NOSSA VIDA E MINISTÉRIO CRISTÃO</h1>
@@ -617,7 +615,6 @@
         </div>
     </div>
 
-    <!-- CONTEÚDO: REUNIÃO FIM DE SEMANA -->
     <div id="reuniao-fim" class="tab-content">
         <div class="refined-header">
             <h1 contenteditable="false" id="title-fim">REUNIÃO PÚBLICA E ESTUDO DE A SENTINELA</h1>
@@ -690,7 +687,6 @@
         </div>
     </div>
 
-    <!-- CONTEÚDO: NOVA ABA - SERVIÇO DE CAMPO -->
     <div id="tab-campo" class="tab-content">
         <div class="refined-header">
             <h1 contenteditable="false">ARRANJO DE SERVIÇO DE CAMPO</h1>
@@ -699,7 +695,7 @@
             </div>
         </div>
         <div class="section-banner bg-tesouros">
-            <span>ESCALA DE DIRIGENTES E PONTOS de ENCONTRO</span>
+            <span>ESCALA DE DIRIGENTES E PONTOS DE ENCONTRO</span>
             <div class="banner-controls">
                 <button class="section-lock-btn locked" onclick="toggleLockSection(this)">🔒 Trancado</button>
                 <button class="section-bold-btn active-bold" onclick="toggleBoldSection(this)">Negrito</button>
@@ -814,7 +810,6 @@
 </div> <!-- FIM DO DOCUMENT-CONTAINER -->
 
 <script>
-    // Gerenciamento das Fontes Disponíveis
     const availableFonts = [
         "'Plus Jakarta Sans', sans-serif",
         "'Inter', sans-serif",
@@ -823,12 +818,77 @@
     ];
     let currentFontIndex = 0;
 
+    // SISTEMA DE SALVAMENTO AUTOMÁTICO (LOCAL STORAGE)
+    function saveToLocalStorage() {
+        const appState = {
+            htmlContent: document.getElementById('capture-target').innerHTML,
+            theme: document.body.getAttribute('data-theme') || '',
+            paper: document.body.getAttribute('data-paper') || '',
+            currentFont: document.documentElement.style.getPropertyValue('--app-font') || availableFonts[0],
+            fontIndex: currentFontIndex
+        };
+        localStorage.setItem('esboço_presidente_data', JSON.stringify(appState));
+    }
+
+    function loadFromLocalStorage() {
+        const savedData = localStorage.getItem('esboço_presidente_data');
+        if (!savedData) {
+            document.querySelectorAll('.table-row').forEach(row => setupRowInteraction(row));
+            return;
+        }
+        try {
+            const state = JSON.parse(savedData);
+            if (state.htmlContent) {
+                document.getElementById('capture-target').innerHTML = state.htmlContent;
+            }
+            if (state.theme) document.body.setAttribute('data-theme', state.theme);
+            else document.body.removeAttribute('data-theme');
+            
+            if (state.paper) document.body.setAttribute('data-paper', state.paper);
+            else document.body.removeAttribute('data-paper');
+            
+            if (state.currentFont) {
+                document.documentElement.style.setProperty('--app-font', state.currentFont);
+                currentFontIndex = state.fontIndex || 0;
+            }
+            
+            // Reatribui eventos aos elementos carregados dinamicamente
+            document.querySelectorAll('.table-row').forEach(row => {
+                setupRowInteraction(row);
+            });
+            attachLiveBoldListeners();
+        } catch (e) {
+            console.error("Erro ao carregar dados salvos automaticamente.", e);
+        }
+    }
+
+    // INTERCEPTADOR PARA FORÇAR NEGRITO AO DIGITAR
+    function attachLiveBoldListeners() {
+        document.querySelectorAll('.col-content').forEach(cell => {
+            cell.removeEventListener('keydown', forceBoldTextEvent);
+            cell.addEventListener('keydown', forceBoldTextEvent);
+        });
+    }
+
+    function forceBoldTextEvent(e) {
+        const cell = e.currentTarget;
+        if (cell.classList.contains('text-bold-active')) {
+            // Se a célula estiver vazia ou com texto padrão puro, força o container do browser a manter negrito nativo
+            if (cell.innerText.trim() === "" || cell.innerHTML === "<br>") {
+                // Pequeno delay para interceptar a criação do nó de texto nativo pelo navegador
+                setTimeout(() => {
+                    document.execCommand('bold', false, null);
+                }, 1);
+            }
+        }
+    }
+
     function changeFont() {
         currentFontIndex = (currentFontIndex + 1) % availableFonts.length;
         document.documentElement.style.setProperty('--app-font', availableFonts[currentFontIndex]);
+        saveToLocalStorage();
     }
 
-    // Gerenciamento de Abas Geral
     function switchTab(tabId) {
         document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
         document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active-content'));
@@ -838,39 +898,30 @@
         
         const targetContent = document.getElementById(tabId);
         if(targetContent) targetContent.classList.add('active-content');
+        saveToLocalStorage();
     }
 
-    // Alternador de Temas Visuais
     function toggleTheme() {
         const body = document.body;
         const currentTheme = body.getAttribute('data-theme');
-        if (!currentTheme) {
-            body.setAttribute('data-theme', 'clear-blue');
-        } else if (currentTheme === 'clear-blue') {
-            body.setAttribute('data-theme', 'clear-green');
-        } else {
-            body.removeAttribute('data-theme');
-        }
+        if (!currentTheme) body.setAttribute('data-theme', 'clear-blue');
+        else if (currentTheme === 'clear-blue') body.setAttribute('data-theme', 'clear-green');
+        else body.removeAttribute('data-theme');
+        saveToLocalStorage();
     }
 
-    // Alternador do Estilo do Papel de Fundo
     function togglePaperStyle() {
         const body = document.body;
         const currentPaper = body.getAttribute('data-paper');
-        if (!currentPaper) {
-            body.setAttribute('data-paper', 'soft-blue');
-        } else if (currentPaper === 'soft-blue') {
-            body.setAttribute('data-paper', 'modern-gray');
-        } else {
-            body.removeAttribute('data-paper');
-        }
+        if (!currentPaper) body.setAttribute('data-paper', 'soft-blue');
+        else if (currentPaper === 'soft-blue') body.setAttribute('data-paper', 'modern-gray');
+        else body.removeAttribute('data-paper');
+        saveToLocalStorage();
     }
 
-    // Função universal para mover linhas para cima ou para baixo
     function moveRow(button, direction) {
         const row = button.closest('.table-row');
         if (!row) return;
-        
         const container = row.parentElement;
         
         if (direction === 'up') {
@@ -884,9 +935,9 @@
                 container.insertBefore(next, row);
             }
         }
+        saveToLocalStorage();
     }
 
-    // Criação Dinâmica de Linhas
     function addRowSpec(containerId, isCantico = false) {
         const container = document.getElementById(containerId);
         const rowId = 'row-' + Date.now();
@@ -910,9 +961,10 @@
         
         setupRowInteraction(row);
         container.appendChild(row);
+        attachLiveBoldListeners();
+        saveToLocalStorage();
     }
 
-    // Criação Dinâmica de Blocos de Notas
     function addNoteSpec(containerId) {
         const container = document.getElementById(containerId);
         const noteId = 'note-' + Date.now();
@@ -923,20 +975,18 @@
         
         noteBlock.innerHTML = `
             <div class="note-editable" contenteditable="true">Clique para digitar sua observação...</div>
-            <button class="btn-delete-note" onclick="this.parentElement.remove()">❌ Excluir Nota</button>
+            <button class="btn-delete-note" onclick="this.parentElement.remove(); saveToLocalStorage();">❌ Excluir Nota</button>
             <div style="clear:both;"></div>
         `;
         
         container.appendChild(noteBlock);
+        saveToLocalStorage();
     }
 
-    // Menu Flutuante Lateral Condicional (Só aparece se a seção estiver desimpedida)
     function setupRowInteraction(row) {
         row.addEventListener('mouseenter', function() {
             const container = this.parentElement;
-            if (!container) return;
-            
-            if (container.getAttribute('data-section-locked') === 'true') return;
+            if (!container || container.getAttribute('data-section-locked') === 'true') return;
             if (this.querySelector('.row-controls')) return;
             
             const controls = document.createElement('div');
@@ -955,7 +1005,7 @@
             const btnDel = document.createElement('button');
             btnDel.className = 'btn-row-action btn-row-del';
             btnDel.innerText = '❌';
-            btnDel.onclick = () => this.remove();
+            btnDel.onclick = () => { this.remove(); saveToLocalStorage(); };
             
             controls.appendChild(btnUp);
             controls.appendChild(btnDown);
@@ -969,7 +1019,6 @@
         });
     }
 
-    // Tranca e Destranca Textos de Seções Específicas
     function toggleLockSection(btn) {
         const banner = btn.closest('.section-banner');
         const nextContainer = banner.nextElementSibling;
@@ -991,7 +1040,6 @@
             btn.classList.add('locked');
             btn.innerText = '🔒 Trancado';
             nextContainer.setAttribute('data-section-locked', 'true');
-            
             nextContainer.querySelectorAll('.row-controls').forEach(ctrl => ctrl.remove());
             
             if(header) {
@@ -1001,9 +1049,9 @@
                 cell.setAttribute('contenteditable', 'false');
             });
         }
+        saveToLocalStorage();
     }
 
-    // Aplica Negrito Coletivo nas Células de Conteúdo da Seção
     function toggleBoldSection(btn) {
         const banner = btn.closest('.section-banner');
         const nextContainer = banner.nextElementSibling;
@@ -1019,9 +1067,10 @@
                 cell.classList.add('text-bold-active');
             });
         }
+        saveToLocalStorage();
     }
 
-    // LÓGICA DO MENU FLUTUANTE DE FORMATAÇÃO (NEGRITO/ITÁLICO PARA SELEÇÃO)
+    // MENU FLUTUANTE DE FORMATO SELETIVO
     let formatToolbar = null;
 
     function createFormatToolbar() {
@@ -1034,6 +1083,7 @@
         btnBold.onmousedown = function(e) {
             e.preventDefault(); 
             document.execCommand('bold', false, null);
+            saveToLocalStorage();
         };
 
         const btnItalic = document.createElement('button');
@@ -1041,6 +1091,7 @@
         btnItalic.onmousedown = function(e) {
             e.preventDefault();
             document.execCommand('italic', false, null);
+            saveToLocalStorage();
         };
 
         formatToolbar.appendChild(btnBold);
@@ -1056,14 +1107,11 @@
         }
 
         let anchor = selection.anchorNode;
-        if (anchor && anchor.nodeType === 3) {
-            anchor = anchor.parentNode;
-        }
+        if (anchor && anchor.nodeType === 3) anchor = anchor.parentNode;
         
         if (anchor && anchor.closest('[contenteditable="true"]')) {
             const range = selection.getRangeAt(0);
             const rect = range.getBoundingClientRect();
-            
             if (formatToolbar) {
                 formatToolbar.style.display = 'flex';
                 formatToolbar.style.left = `${rect.left + window.scrollX + (rect.width / 2) - (formatToolbar.offsetWidth / 2)}px`;
@@ -1074,17 +1122,11 @@
         }
     }
 
-    // Inicialização do Menu de Formatação e Listeners
     createFormatToolbar();
     document.addEventListener('mouseup', checkTextSelection);
     document.addEventListener('keyup', checkTextSelection);
 
-    // Inicialização automática das interações em todas as tabelas
-    document.querySelectorAll('.table-row').forEach(row => {
-        setupRowInteraction(row);
-    });
-
-    // Módulos de Exportação e Importação de Backup Geral
+    // EXPORTAÇÃO MANUAL DE ARQUIVOS JSON
     function exportData() {
         const data = {
             targetHTML: document.getElementById('capture-target').innerHTML,
@@ -1118,17 +1160,5 @@
                         const matchIndex = availableFonts.indexOf(data.currentFont);
                         if(matchIndex !== -1) currentFontIndex = matchIndex;
                     }
-                    document.querySelectorAll('.table-row').forEach(row => {
-                        setupRowInteraction(row);
-                    });
-                }
-                alert('Backup completo restaurado com sucesso!');
-            } catch (err) {
-                alert('Erro ao processar o arquivo de backup.');
-            }
-        };
-        reader.readAsText(file);
-    }
-</script>
-</body>
-</html>
+                    document.querySelectorAll('.table-row').forEach(row => setupRowInteraction(row));
+  
